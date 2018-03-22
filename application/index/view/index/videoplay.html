@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>  
+  <meta charset="utf-8" />
+  <title>Musik | Web Application</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+  <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font.css" type="text/css" />
+  <link rel="stylesheet" href="/css/app.css" type="text/css" /> 
+</head>
+<body class="">
+  <section class="vbox">
+    <section>
+      <section class="hbox stretch">
+        <!-- .aside -->
+        <!-- /.aside -->
+        <section id="content">
+          <section class="vbox">
+            <section class="scrollable wrapper-lg" style="bottom: 60px;">
+              <div class="row">
+                <div class="col-sm-8">
+                  <div class="panel">
+                    <!-- video player -->
+                    <div id="jp_container_1">
+                      <div class="jp-type-single pos-rlt">
+                        <div id="jplayer_1" class="jp-jplayer jp-video"></div>
+                        <div class="jp-gui">
+                          <div class="jp-video-play">
+                            <a class="fa fa-5x text-white fa-play-circle"></a>
+                          </div>
+                          <div class="jp-interface bg-info padder">
+                            <div class="jp-controls">
+                              <div>
+                                <a class="jp-play"><i class="icon-control-play i-2x"></i></a>
+                                <a class="jp-pause hid"><i class="icon-control-pause i-2x"></i></a>
+                              </div>
+                              <div class="jp-progress">
+                                <div class="jp-seek-bar dker">
+                                  <div class="jp-play-bar dk">
+                                  </div>
+                                  <div class="jp-title text-lt">
+                                    <ul>
+                                      <li></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="hidden-xs hidden-sm jp-current-time text-xs text-muted"></div>
+                              <div class="hidden-xs hidden-sm jp-duration text-xs text-muted"></div>
+                              <div class="hidden-xs hidden-sm">
+                                <a class="jp-mute" title="mute"><i class="icon-volume-2"></i></a>
+                                <a class="jp-unmute hid" title="unmute"><i class="icon-volume-off"></i></a>
+                              </div>
+                              <div class="hidden-xs hidden-sm jp-volume">
+                                <div class="jp-volume-bar dk">
+                                  <div class="jp-volume-bar-value lter"></div>
+                                </div>
+                              </div>
+                              <div>
+                                <a class="jp-full-screen" title="full screen"><i class="fa fa-expand"></i></a>
+                                <a class="jp-restore-screen" title="restore screen"><i class="fa fa-compress text-lt"></i></a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="jp-no-solution hide">
+                          <span>Update Required</span>
+                          To play the media you will need to either update your browser to a recent version or update your
+                        </div>
+                      </div>
+                    </div>
+                    <!-- / video player -->
+                    <div class="wrapper-lg">
+                      <h2 class="m-t-none text-black">{$mv.title}</h2>
+                      <div class="post-sum">
+                        <p>{$mv.content}</p>
+                      </div>
+                      <div class="line b-b"></div>
+                      <div class="text-muted">
+                        <i class="fa fa-user icon-muted"> <a href="#" class="m-r-sm">{$mv.singer}</a></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <i class="fa fa-clock-o icon-muted"> {$mv.create_time|date="Y-m-d",###}</i> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="#comment-form" class="btn btn-default btn-xs"><i class="fa fa-mail-reply text-muted"></i> 评论
+                        </a>
+                      </div>
+
+                    </div>
+                  </div>
+                  <h4 class="m-t-lg m-b">{$sum} 条评论</h4>
+                  <!-- 评论区 -->
+                  <div class="col-lg-12" id="reply_info">
+                  <!-- .comment-list -->
+{if !empty($tree)}
+{foreach $tree as $key=>$val}
+                    <section class="comment-list block">
+                    <article id="comment-id-1" class="comment-item">
+                      <a class="pull-left thumb-sm avatar">
+                        <img src="{$val.photo}" class="img-circle" alt="...">
+                      </a>
+                      <span class="arrow left"></span>
+                      <section class="comment-body panel panel-default">
+                        <header class="panel-heading bg-white">
+                          <a href="#">{$val.user}</a>
+                          <span class="text-muted m-l-sm pull-right">
+                            <i class="fa fa-clock-o"></i>
+                            {$val.create_time|date="Y-m-d H:i",###}
+                          </span>
+                        </header>
+                        <div class="panel-body">
+                          <div>{$val.content}</div>
+                          <div class="comment-action m-t-sm">
+                            <a href="#" class="btn btn-default btn-xs" onclick="reply_content(this)">
+                              <i style="display: none;">{$val.user}</i>
+    {if !empty($Request.session.pic_header)}
+                              <i style="display: none;">{$Request.session.pic_header}</i>
+    {else}
+                              <i style="display: none;">/images/a0.png</i>
+    {/if}
+                              <i style="display: none;">{$val.id}</i>
+                              <i class="fa fa-mail-reply text-muted"></i> 回复
+                            </a>
+                          </div>
+                        </div>
+                      </section>
+                    </article>
+                    <!-- .comment-reply -->
+  {if !empty($val.child)}
+  {foreach $val.child as $k=>$v}
+                    <article id="comment-id-2" class="comment-item comment-reply">
+                      <a class="pull-left thumb-sm avatar">
+                        <img src="{$v.photo}" alt="...">
+                      </a>
+                      <span class="arrow left"></span>
+                      <section class="comment-body panel panel-default text-sm">
+                        <div class="panel-body">
+                          <span class="text-muted m-l-sm pull-right">
+                            <i class="fa fa-clock-o"></i>
+                            {$v.create_time|date="Y-m-d H:i",###}
+                          </span>
+                          <a href="#">{$v.user}</a>
+                          <label class="label bg-dark m-l-xs">@</label> 
+                          {$v.replyuser}                         
+                        </div>
+                        <div class="panel-body">
+                          <div>{$v.content}</div>
+                          <div class="comment-action m-t-sm">
+                            <a href="#" class="btn btn-default btn-xs"  onclick="reply_content(this)">
+                              <i style="display: none;">{$v.user}</i>
+    {if !empty($Request.session.pic_header)}
+                              <i style="display: none;">{$Request.session.pic_header}</i>
+    {else}
+                              <i style="display: none;">/images/a0.png</i>
+    {/if}
+                              <i style="display: none;">{$val.id}</i>
+                              <i class="fa fa-mail-reply text-muted"></i> 回复
+                            </a>
+                          </div>
+                        </div>
+                      </section>
+                      
+                    </article>
+  {/foreach}
+  {/if}
+                    <!-- / .comment-reply -->
+                    </section>
+{/foreach}
+{/if}
+                  <!-- / .comment-list -->
+                  </div>
+                  <!-- 评论区结束 -->
+                  <h4 class="m-t-lg m-b"></h4>
+                  <form action="/index/index/reply" method="post"  onSubmit="return confirm();">
+                    <div class="form-group pull-in clearfix">
+                      <div class="col-sm-6">
+                      </div>
+                      <div class="col-sm-6">
+                      </div>
+                    </div>
+                    <div class="form-group" id="comment-form">
+                      <label>评论</label>
+                      <textarea class="form-control" rows="5" placeholder="请评论..." id="textarea" ></textarea>
+                    </div>
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-success" onclick="reply_first()">发表</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-sm-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">相关推荐</div>
+                    <div class="panel-body">
+{if !empty($mvs)}
+  {foreach $mvs as $value}
+                      <article class="media">
+                        <a href="/index/index/videoPlay?mid={$value.mid}" class="pull-left thumb-lg m-t-xs">
+                          <img src="{$value.poster}">
+                        </a>
+                        <div class="media-body">                        
+                          <a href="#" class="font-semibold">{$value.title}</a>
+                          <div class="text-xs block m-t-xs"><a href="#">{$value.singer}</a> {$value.create_time|date="Y-m-d",###}</div>
+                        </div>
+                      </article>
+  {/foreach}
+{/if}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+          <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+        </section>
+      </section>
+    </section>    
+  </section>
+  <script src="/js/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="/js/bootstrap.js"></script>
+  <!-- App -->
+  <script src="/js/app.js"></script>  
+  <script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+  
+  <script src="/js/app.plugin.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/demo.js"></script>
+  <script type="text/javascript" src="/js/reply_video.js"></script>
+</body>
+</html>

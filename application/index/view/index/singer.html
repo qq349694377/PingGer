@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>  
+  <meta charset="utf-8" />
+  <title>Musik | Web Application</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+  <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="/css/style2.css" />
+  <link rel="stylesheet" href="/css/app.css" type="text/css" />  
+</head>
+<body class="">
+  <section class="vbox">
+    <section>
+      <section class="hbox stretch">
+        <!-- .aside -->
+        <!-- /.aside -->
+        <section id="content">
+          <section class="vbox">
+            <section class="scrollable" style="bottom: 60px;">
+              <section class="hbox stretch">
+                <aside class="aside-lg bg-light lter b-r">
+                  <section class="vbox">
+                    <section class="scrollable">
+                      <div class="wrapper">
+                        <div class="text-center m-b m-t">
+                          <a href="#" class="thumb-lg">
+                            <img src="{$singer.pic}" class="img-circle">
+                          </a>
+                          <div>
+                            <div class="h3 m-t-xs m-b-xs">{$singer.singer}</div>
+                          </div>                
+                        </div>
+                        <div>
+                          <small class="text-uc text-xs text-muted">歌曲总量</small>
+                          <p>{$sum} 首</p>
+                          <small class="text-uc text-xs text-muted">个人介绍</small>
+                          <p>{$singer.introduce}</p>
+                          <div class="line">
+                        </div>
+                      </div>
+                    </section>
+                  </section>
+                </aside>
+                <aside class="bg-white">
+                  <section class="vbox">
+                    <header class="header bg-light lt">
+                      <ul class="nav nav-tabs nav-white">
+                        <li><a>歌曲</a></li>
+                      </ul>
+                    </header>
+                    <section class="scrollable">
+                      <div class="tab-content">
+                        <div class="tab-pane active" id="activity">
+                          <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border search_result">
+                            
+                          </ul>
+                        </div>
+                        <div class="tab-pane" id="events">
+                          <div class="text-center wrapper">
+                            <i class="fa fa-spinner fa fa-spin fa fa-large"></i>
+                          </div>
+                        </div>
+                        <div class="tab-pane" id="interaction">
+                          <div class="text-center wrapper">
+                            <i class="fa fa-spinner fa fa-spin fa fa-large"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </section>
+                </aside>
+              </section>
+            </section>
+          </section>
+          <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+        </section>
+      </section>
+    </section>    
+  </section>
+  {if !empty($Request.session.username)}
+  <!--添加快捷方式模态框开始-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="add_list">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">收藏到歌单 </h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <div class="shortcut-add-box-right">
+          <ul>
+{if !empty($song_list)}
+  {foreach $song_list as $value}
+            <li class="active" id="li1" onclick="add_list({$value.id})"  class="close mid" data-dismiss="modal" aria-hidden="true">
+              <i class="icon-grid"></i>
+              <span>{$value.list}</span>
+            </li>
+  {/foreach}
+{/if}
+            <li onclick="add_mylist(this)">
+              <i class="fa fa-plus"></i>
+              <span>新建歌单</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+    <div class="modal-content" id="add_mylist" style="display: none;">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">创建新歌单</h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <div class="shortcut-add-box-right">
+          <div class="car-info-shortcut shortcut-element-list">
+            <h5><span>歌单名称</span></h5>
+            <ul class="shortcut-element-box clearfix">
+              <li>
+                <i class="fa fa-car"></i>
+                <input type="text" placeholder="请输入歌单名..." id="listName">
+              </li>
+            </ul>
+          </div>
+          <div class="car-info-shortcut shortcut-element-list">
+            <h5><span>歌单介绍</span></h5>
+            <ul class="shortcut-element-box clearfix">
+              <li>
+                <i class="fa fa-car"></i>
+                <input type="text" id="listContent">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="shortcutEnter" onclick="confirm_add()" class="close mid" data-dismiss="modal" aria-hidden="true">创建并添加歌曲</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!--添加快捷方式模态框结束-->
+{/if}
+  <script src="/js/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="/js/bootstrap.js"></script>
+  <!-- App -->
+  <script src="/js/app.js"></script>  
+  <script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="/js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
+  <script src="/js/app.plugin.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+  <script type="text/javascript" src="/js/singer.js"></script>
+<!-- <div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div> -->
+</body>
+</html>

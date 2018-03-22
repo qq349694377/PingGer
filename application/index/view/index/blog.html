@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>  
+  <meta charset="utf-8" />
+  <title>Musik | Web Application</title>
+  <link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+  <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="/css/style2.css" />
+  <link rel="stylesheet" href="/css/app.css" type="text/css" />  
+</head>
+<body class="">
+  <section class="vbox">
+    <section>
+      <section class="hbox stretch">
+        <section id="content">
+          <section class="vbox">
+            <section class="scrollable wrapper-lg" style="bottom: 70px;">
+              <div class="row">
+                <div class="col-sm-9">
+                  <div class="blog-post">                   
+                    <div class="post-item">
+                      <div class="search_result">
+                        
+                      </div>
+                      
+                      <div class="caption wrapper-lg">
+                        <h2 class="post-title"><a href="#">{$pyq.title}</a></h2>
+                        <div class="post-sum">
+                          <p>{$pyq.content}</p>
+                        </div>
+                        <div class="line line-lg"></div>
+                        <div class="text-muted">
+                          <i class="fa fa-user icon-muted"></i> by <a href="#" class="m-r-sm">{$pyq.uid}</a>
+                          <i class="fa fa-clock-o icon-muted"></i> {$pyq.create_time|date="Y-m-d",###}
+                          <a href="#comment-form" class="btn btn-default btn-xs m-l-sm"><i class="fa fa-mail-reply text-muted"></i> 评论
+                        </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h4 class="m-t-lg m-b">{$sum} 条评论</h4>
+                  <!-- 评论区 -->
+                  <div class="col-lg-12" id="reply_info">
+                  <!-- .comment-list -->
+{if !empty($tree)}
+{foreach $tree as $key=>$val}
+                    <section class="comment-list block">
+                    <article id="comment-id-1" class="comment-item">
+                      <a class="pull-left thumb-sm avatar">
+                        <img src="{$val.photo}" class="img-circle" alt="...">
+                      </a>
+                      <span class="arrow left"></span>
+                      <section class="comment-body panel panel-default">
+                        <header class="panel-heading bg-white">
+                          <a href="#">{$val.user}</a>
+                          <span class="text-muted m-l-sm pull-right">
+                            <i class="fa fa-clock-o"></i>
+                            {$val.create_time|date="Y-m-d H:i",###}
+                          </span>
+                        </header>
+                        <div class="panel-body">
+                          <div>{$val.content}</div>
+                          <div class="comment-action m-t-sm">
+                            <a href="#" class="btn btn-default btn-xs" onclick="reply_content(this)">
+                              <i style="display: none;">{$val.user}</i>
+    {if !empty($Request.session.pic_header)}
+                              <i style="display: none;">{$Request.session.pic_header}</i>
+    {else}
+                              <i style="display: none;">/images/a0.png</i>
+    {/if}
+                              <i style="display: none;">{$val.id}</i>
+                              <i class="fa fa-mail-reply text-muted"></i> 回复
+                            </a>
+                          </div>
+                        </div>
+                      </section>
+                    </article>
+                    <!-- .comment-reply -->
+  {if !empty($val.child)}
+  {foreach $val.child as $k=>$v}
+                    <article id="comment-id-2" class="comment-item comment-reply">
+                      <a class="pull-left thumb-sm avatar">
+                        <img src="{$v.photo}" alt="...">
+                      </a>
+                      <span class="arrow left"></span>
+                      <section class="comment-body panel panel-default text-sm">
+                        <div class="panel-body">
+                          <span class="text-muted m-l-sm pull-right">
+                            <i class="fa fa-clock-o"></i>
+                            {$v.create_time|date="Y-m-d H:i",###}
+                          </span>
+                          <a href="#">{$v.user}</a>
+                          <label class="label bg-dark m-l-xs">@</label> 
+                          {$v.replyuser}                         
+                        </div>
+                        <div class="panel-body">
+                          <div>{$v.content}</div>
+                          <div class="comment-action m-t-sm">
+                            <a href="#" class="btn btn-default btn-xs"  onclick="reply_content(this)">
+                              <i style="display: none;">{$v.user}</i>
+    {if !empty($Request.session.pic_header)}
+                              <i style="display: none;">{$Request.session.pic_header}</i>
+    {else}
+                              <i style="display: none;">/images/a0.png</i>
+    {/if}
+                              <i style="display: none;">{$val.id}</i>
+                              <i class="fa fa-mail-reply text-muted"></i> 回复
+                            </a>
+                          </div>
+                        </div>
+                      </section>
+                      
+                    </article>
+  {/foreach}
+  {/if}
+                    <!-- / .comment-reply -->
+                    </section>
+{/foreach}
+{/if}
+                  <!-- / .comment-list -->
+                  </div>
+                  <!-- 评论区结束 -->
+                  <h4 class="m-t-lg m-b"></h4>
+                  <form action="/index/index/reply" method="post"  onSubmit="return false;">
+                    <div class="form-group pull-in clearfix">
+                      <div class="col-sm-6">
+                      </div>
+                      <div class="col-sm-6">
+                      </div>
+                    </div>
+                    <div class="form-group" id="comment-form">
+                      <label>评论</label>
+                      <textarea class="form-control" rows="5" placeholder="请评论..." id="textarea" ></textarea>
+                    </div>
+                    <div class="form-group">
+                      <button class="btn btn-success" onclick="reply_first()">发表</button>
+                    </div>
+                  </form>
+                </div>
+<!-- left-->
+                <div class="col-sm-3">
+                  <h5 class="font-bold">相关推荐</h5>
+                  <div>
+{if !empty($mvs)}
+  {foreach $mvs as $v}
+                    <article class="media">
+                      <a class="pull-left thumb thumb-wrapper m-t-xs" href="/index/index/blog?id={$v.id}">
+                        <img src="{$v.img}">
+                      </a>
+                      <div class="media-body">                        
+                        <a href="/index/index/blog?id={$v.id}" class="font-semibold clear text-ellipsis">{$v.title}: {$v.content}</a>
+                        <div class="text-xs block m-t-xs"><a href="#">{$v.uid}</a> {$v.create_time|date="Y-m-d H:i",###}</div>
+                      </div>
+                    </article>
+                    <div class="line"></div>
+  {/foreach}
+{else}
+                    <div class="media-body">                        
+                      暂无推荐
+                    </div>
+{/if}
+                  </div>
+                </div>
+<!--left end-->
+              </div>
+            </section>
+          </section>
+          <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+        </section>
+      </section>
+    </section>    
+  </section>
+  {if !empty($Request.session.username)}
+  <!--添加快捷方式模态框开始-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="add_list">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">收藏到歌单 </h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <div class="shortcut-add-box-right">
+          <ul>
+{if !empty($song_list)}
+  {foreach $song_list as $value}
+            <li class="active" id="li1" onclick="add_list({$value.id})"  class="close mid" data-dismiss="modal" aria-hidden="true">
+              <i class="icon-grid"></i>
+              <span>{$value.list}</span>
+            </li>
+  {/foreach}
+{/if}
+            <li onclick="add_mylist(this)">
+              <i class="fa fa-plus"></i>
+              <span>新建歌单</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+    <div class="modal-content" id="add_mylist" style="display: none;">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">创建新歌单</h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <div class="shortcut-add-box-right">
+          <div class="car-info-shortcut shortcut-element-list">
+            <h5><span>歌单名称</span></h5>
+            <ul class="shortcut-element-box clearfix">
+              <li>
+                <i class="fa fa-car"></i>
+                <input type="text" placeholder="请输入歌单名..." id="listName">
+              </li>
+            </ul>
+          </div>
+          <div class="car-info-shortcut shortcut-element-list">
+            <h5><span>歌单介绍</span></h5>
+            <ul class="shortcut-element-box clearfix">
+              <li>
+                <i class="fa fa-car"></i>
+                <input type="text" id="listContent">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="shortcutEnter" onclick="confirm_add()" class="close mid" data-dismiss="modal" aria-hidden="true">创建并添加歌曲</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!--添加快捷方式模态框结束-->
+{/if}
+  <script src="/js/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="/js/bootstrap.js"></script>
+  <!-- App -->
+  <script src="/js/app.js"></script>  
+  <script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+  
+  <script src="/js/app.plugin.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+  <script type="text/javascript" src="/js/blog.js"></script>
+  <script type="text/javascript" src="/js/reply_blog.js"></script>
+</body>
+</html>

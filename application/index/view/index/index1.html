@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>  
+  <meta charset="utf-8" />
+  <title>Musik | Web Application</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+  <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font.css" type="text/css" />
+  <link rel="stylesheet" href="/css/app.css" type="text/css" /> 
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style2.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="css/player.css" />  -->
+    <!--[if lt IE 9]>
+    <script src="js/ie/html5shiv.js"></script>
+    <script src="js/ie/respond.min.js"></script>
+    <script src="js/ie/excanvas.js"></script>
+  <![endif]-->
+</head>
+<body class="">
+  <section class="vbox">
+    <section>
+      <section class="hbox stretch">
+        <!-- .aside -->
+        <!-- /.aside -->
+        <section id="content">
+          <section class="hbox stretch">
+            <section>
+              <section class="vbox">
+                <section class="scrollable padder-lg w-f-md" id="bjax-target">
+                <!-- 轮播图 -->
+                <div class="row" style="width: 100%;">
+                  <div class="main_banner">
+                    <div class="main_banner_bg"></div>
+                    <div class="main_banner_wrap">
+                        <canvas id="myCanvas"></canvas>
+                        <div class="main_banner_box" id="m_box">
+                            <a href="javascript:void(0)" class="banner_btn js_pre">
+                                <span class="banner_btn_arrow"><i></i></span>
+                            </a>
+                            <a href="javascript:void(0)" class="banner_btn btn_next js_next">
+                                <span class="banner_btn_arrow"><i></i></span>
+                            </a>
+                            <ul>
+{if !empty($lb)}
+  {foreach $lb as $k=>$v}
+    {if $k == 0}
+                                <li id="imgCard{$k}">
+                                    <a href="/index/index/videoPlay?mid={$v.mid}"><span style="opacity:0;"></span></a>      
+                                    <img src="{$v.img}" alt="">
+                                    <p style="bottom:0">{$v.title}</p>
+                                </li> 
+    {else}                            
+                                <li id="imgCard{$k}">
+                                    <a href="/index/index/videoPlay?mid={$v.mid}"><span style="opacity:0.4;"></span></a>      
+                                    <img src="{$v.img}" alt="">
+                                    <p>{$v.title}</p>
+                                </li> 
+    {/if}                            
+  {/foreach}                          
+{/if}                               
+                            </ul>
+                            <!--火狐倒影图层-->
+                            <p id="rflt"></p>
+                            <!--火狐倒影图层-->
+                        </div>
+                        <!--序列号按钮-->
+                        <div class="btn_list">
+                            <span class="curr"></span><span></span><span></span><span></span><span></span>        
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 轮播图结束 -->
+                <!--新歌推荐 开始-->
+    <!--标题 开始-->
+                <div class="row songs_rcmd_title">
+                  <div class="col-lg-4" style="padding: 0;">
+                    <section class="panel panel-default">
+                      <div class="panel-body rcmd_left_title rcmd_title" style="padding: 0;">
+                        <span></span>
+                      </div>
+                    </section>
+                  </div>
+                  <div class="col-lg-4" style="padding: 0;">
+                    <section class="panel panel-default">
+                      <div class="panel-body rcmd_center_title rcmd_title" style="padding: 0;">
+                          <span></span>
+                      </div>
+                    </section>
+                  </div>
+                  <div class="col-lg-4" style="padding: 0;">
+                    <section class="panel panel-default">
+                      <div class="panel-body rcmd_right_title rcmd_title" style="padding: 0;">
+                          <span></span>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+    <!--标题 结束-->
+    <!--推荐内容 开始-->
+                <div class="row songs_rcmd"  id="songs_rcmd">
+                  <div class="songs_rcmd_cont">
+                  <div class="col-lg-4" style="padding: 0;" id="new">
+                    <section class="panel panel-default">
+                      <ul class="panel-body rcmd_left rcmd_cont newSong" id="latest" style="padding: 0;">
+                      </ul>
+                    </section>
+                  </div>
+                  <div class="col-lg-4" style="padding: 0;" id="hot">
+                    <section class="panel panel-default">
+                      <ul class="panel-body rcmd_left rcmd_cont hotSong" id="latest" style="padding: 0;">
+                           
+                      </ul>
+                    </section>
+                  </div>
+                  <div class="col-lg-4" style="padding: 0;" id="top">
+                    <section class="panel panel-default">
+                      <ul class="panel-body rcmd_left rcmd_cont topSong" id="latest" style="padding: 0;">
+                
+                      </ul>
+                    </section>
+                  </div>
+                  </div>
+                </div>
+    <!--推荐内容 结束-->
+    <!-- 歌单推荐  开始-->
+                  <a href="#" class="pull-right text-muted m-t-lg" data-toggle="class:fa-spin" ><i class="icon-refresh i-lg  inline" id="refresh"></i></a>
+                  <h2 class="font-thin m-b">歌单推荐 <span class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                    <span class="bar1 a1 bg-primary lter"></span>
+                    <span class="bar2 a2 bg-info lt"></span>
+                    <span class="bar3 a3 bg-success"></span>
+                    <span class="bar4 a4 bg-warning dk"></span>
+                    <span class="bar5 a5 bg-danger dker"></span>
+                  </span></h2>
+                  <div class="row row-sm">
+<!-- 遍历歌单 -->
+{foreach $list as $value}
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                      <div class="item">
+                        <div class="pos-rlt">
+                          <div class="top">
+                            <span class="pull-right m-t-sm m-r-sm badge bg-info">{$value.sum}</span>
+                          </div>
+                          <div class="item-overlay opacity r r-2x bg-black">
+  {if $value.collect < 50}
+                            <div class="text-info padder m-t-sm text-sm">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star-o text-muted"></i>
+                              <i class="fa fa-star-o text-muted"></i>
+                              <i class="fa fa-star-o text-muted"></i>
+                              <i class="fa fa-star-o text-muted"></i>
+                            </div>
+  {elseif $value.collect >= 50 && $value.collect < 100}
+                            <div class="text-info padder m-t-sm text-sm">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star-o text-muted"></i>
+                              <i class="fa fa-star-o text-muted"></i>
+                              <i class="fa fa-star-o text-muted"></i>
+                            </div>
+  {elseif $value.collect >= 100 && $value.collect < 150}
+                            <div class="text-info padder m-t-sm text-sm">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star-o text-muted"></i>
+                              <i class="fa fa-star-o text-muted"></i>
+                            </div>
+  {elseif $value.collect >= 150 && $value.collect < 200}
+                            <div class="text-info padder m-t-sm text-sm">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star-o text-muted"></i>
+                            </div>
+  {elseif $value.collect >= 200}
+                            <div class="text-info padder m-t-sm text-sm">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                            </div>
+  {/if}
+
+                            <div class="center text-center m-t-n">
+                              <a href="/index/index/listSong?id={$value.id}"><i class="fa fa-folder-open-o i-2x"></i></a>
+                            </div>
+                          </div>
+                          <a href="#"><img src="{$value.poster}" alt="" class="r r-2x img-full"></a>
+                        </div>
+                        <div class="padder-v">
+                          <a href="#" class="text-ellipsis">{$value.list}</a>
+                          <a href="#" class="text-ellipsis text-xs text-muted">{$value.author}</a>
+                        </div>
+                      </div>
+                    </div>
+{/foreach}                   
+
+                  </div>
+    <!-- 歌单推荐 结束 -->
+                  <!-- <li class="list-group-item show"><div class="pull-right m-l" style="line-height: 20px;"><a href="#" class="m-r-sm"><i class="icon-cloud-download"></i></a><a href="#" class="m-r-sm"><i class="icon-plus"></i></a></div><a href="#" class="jp-play-me m-r-sm pull-left" style="line-height: 20px;"><i style="display: none;">0</i><i class="icon-control-play text"></i><i class="icon-control-pause text-active"></i></a><div class="clear text-ellipsis" style="line-height: 20px;"><span style="color: #fff;">后会无期—邓紫棋</span></div></li> -->
+                  <div class="row">
+                    <div class="col-md-7">
+                      <h3 class="font-thin">每日推荐</h3>
+                      <div class="row row-sm daySong">
+                      </div>
+                    </div>
+                    <div class="col-md-5">
+                      <h3 class="font-thin">热门歌手</h3>
+                      <div class="list-group bg-white list-group-lg no-bg auto"> 
+{if !empty($singer)}
+  {foreach $singer as $k=>$v}                         
+                        <a href="/index/index/singer?mid={$v.id}" class="list-group-item clearfix">
+                          <span class="pull-right h2 text-muted m-l">{$k + 1}</span>
+                          <span class="pull-left thumb-sm avatar m-r">
+                            <img src="{$v.pic}" alt="...">
+                          </span>
+                          <span class="clear">
+                            <span>{$v.singer}</span>
+                            <small class="text-muted clear text-ellipsis">{$v.introduce}</small>
+                          </span>
+                        </a>
+  {/foreach}                     
+{/if}                       
+                      </div>
+                    </div>
+                  </div>
+                 <!--MV首播 开始-->
+
+                 <div class="row">
+                  <div class="new_mv new_common" style="width: 100%;">
+                      <!--标题 开始-->
+                      <div class="new_mv_title new_common_title index_mv_title">
+                          <span></span>
+                          <a href="/index/index/video" class="more"></a>
+                      </div>
+                      <!--标题 结束-->
+
+                      <div class="new_mv_body index_mv_body">
+                          <!--1首播-->
+                          <div class="mvList" style="display:block;width: 100%;"> 
+                            <ul class="sb mv_show">
+                              
+                            </ul>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                  <!--MV首播 结束-->
+                  
+                </section>
+                <!-- 底部 -->
+                <!-- 底部结束 -->
+              </section>
+            </section>
+          </section>
+          <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+        </section>
+      </section>
+    </section>    
+  </section>
+{if !empty($Request.session.username)}
+  <!--添加快捷方式模态框开始-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="add_list">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">收藏到歌单 </h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <div class="shortcut-add-box-right">
+          <ul>
+{if !empty($song_list)}
+  {foreach $song_list as $value}
+            <li class="active" id="li1" onclick="add_list({$value.id})"  class="close mid" data-dismiss="modal" aria-hidden="true">
+              <i class="icon-grid"></i>
+              <span>{$value.list}</span>
+            </li>
+  {/foreach}
+{/if}
+            <li onclick="add_mylist(this)">
+              <i class="fa fa-plus"></i>
+              <span>新建歌单</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+    <div class="modal-content" id="add_mylist" style="display: none;">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">创建新歌单</h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <div class="shortcut-add-box-right">
+          <div class="car-info-shortcut shortcut-element-list">
+            <h5><span>歌单名称</span></h5>
+            <ul class="shortcut-element-box clearfix">
+              <li>
+                <i class="fa fa-car"></i>
+                <input type="text" placeholder="请输入歌单名..." id="listName">
+              </li>
+            </ul>
+          </div>
+          <div class="car-info-shortcut shortcut-element-list">
+            <h5><span>歌单介绍</span></h5>
+            <ul class="shortcut-element-box clearfix">
+              <li>
+                <i class="fa fa-car"></i>
+                <input type="text" id="listContent">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="shortcutEnter" onclick="confirm_add()" class="close mid" data-dismiss="modal" aria-hidden="true">创建并添加歌曲</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!--添加快捷方式模态框结束-->
+{/if}
+  <script src="/js/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="/js/bootstrap.js"></script>
+  <!-- App -->
+  <script src="/js/app.js"></script>  
+  <script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/js/app.plugin.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/demo.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/play.js"></script>
+  <script type="text/javascript" src="/js/jquery.js"></script>
+  <script type="text/javascript" src="/js/index.js"></script>
+  <script src="/js/index1.js"></script>
+<!--播放器js-->
+  <script type="text/javascript" src="/js/player.js"></script>
+  <script src="/js/plug-in.js"></script>
+</body>
+</html>
+<script>
+  function content(id)
+  {
+    $.Pop('<div class="form-group"><textarea class="form-control fenxiang" rows="6" data-minwords="6" data-required="true" placeholder="Type your message"></textarea></div>','alert',function(){
+      var message = $('.fenxiang').val();
+      $.ajax({
+        type:'get',
+        dataType:'json',
+        url:'/index/index/share',
+        data:{id:id,content:message},
+        async:true,
+        success:share_result
+      });
+    })
+  }
+
+  function share_result(data)
+  {
+    var state = JSON.parse(data).state;
+    if (state == 1) {
+      alert('分享成功');
+    }
+    if (state == 2) {
+      alert('分享失败');
+    }
+    if (state == 3) {
+      alert('您尚未登录,请返回登录...');
+      window.parent.location.replace("/index/user/index");
+    }
+  }
+  
+</script>

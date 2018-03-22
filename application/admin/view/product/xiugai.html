@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="lib/html5shiv.js"></script>
+		<script type="text/javascript" src="lib/respond.min.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" type="text/css" href="/admin/static/h-ui/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/H-ui.admin.css" />
+		<link rel="stylesheet" type="text/css" href="/admin/lib/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/skin/default/skin.css" id="skin" />
+		<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/style.css" />
+		<!--[if IE 6]>
+		<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+		<script>DD_belatedPNG.fix('*');</script>
+		<![endif]-->
+		<title>添加管理员 - 管理员管理</title>
+	</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-admin-add" action="/admin/product/xiugai123" method="post">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
+			<div class="formControls col-xs-8 col-sm-9" id="name">
+				<input type="text" class="input-text" autocomplete="off"  placeholder="角色名称"  name="style" value="{$data['style']}">
+				<input type="hidden" name="id" value="{$data['id']}">
+			</div>
+		</div>
+
+		{if $data['pid'] != 0}
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>风格下的歌曲：</label>
+					<div class="formControls col-xs-8 col-sm-9" id="name">
+						<input type="text" class="input-text" autocomplete="off"  placeholder="角色名称" id="" name="songid" value="{$data['songid']}">
+					</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>父类风格：</label>
+				<div class="formControls col-xs-8 col-sm-9">				
+					<select name='pid'>
+						{foreach $one as $key => $value}
+					  		<option value="{$value['id']}">{$value['style']}</option>
+						{/foreach}
+					</select>
+				</div>
+			</div>
+		{/if}
+		<!-- 将角色的id传过来  传给修改php-->
+		<div><input type="hidden" name="" value="" id='hidden'></div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" id="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<script type="text/javascript" src='/js/jquery-1.11.3.min.js'></script>
+
+</body>
+</html>

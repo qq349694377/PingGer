@@ -1,0 +1,219 @@
+	<!DOCTYPE html>
+	<html lang="en" class="app">
+
+		<head>
+			<meta charset="utf-8" />
+			<title>Musik | Web Application</title>
+			<meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+			<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+			<link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+			<!-- 分页引用的 -->
+			  <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+			  <link rel="stylesheet" type="text/css" href="/css/style2.css" />
+			 <!-- 分页引用的  结束-->
+			  <!-- <link rel="stylesheet" href="/css/animate.css" type="text/css" /> -->
+			  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+			  <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+			  <!-- <link rel="stylesheet" href="/css/font.css" type="text/css" /> -->
+			  <link rel="stylesheet" href="/css/app.css" type="text/css" />  
+			
+			
+			
+		</head>
+
+		<body class="">
+			<section class="vbox">
+				<section style="bottom: 60px;">
+					<section class="hbox stretch">
+						<!-- .aside -->
+						<!-- /.aside -->
+						<section id="content">
+							<section class="vbox">
+								<section class="w-f-md" id="bjax-target">
+									<section class="hbox stretch">
+										<!-- side content -->
+										<aside class="aside bg-light dk" id="sidebar">
+											<section class="vbox animated fadeInUp">
+												<section class="scrollable">
+													<!-- 菜单遍历 -->
+													
+													<div class="list-group no-radius no-border no-bg m-t-n-xxs m-b-none auto">
+														<div class="panel-group m-b" style="margin-bottom: 0;" id="accordion2">
+										                    <div class="panel panel-default">
+										                      <div class="panel-heading text-center">
+										                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse" onclick="style_select(this)">全部</a>
+										                      </div>
+										                    </div>
+										                </div>
+{if !empty($style_one)}
+	{foreach $style_one as $value}														
+														<div class="panel-group m-b" style="margin-bottom: 0;" id="accordion2">
+										                    <div class="panel panel-info">
+										                      <div class="panel-heading text-center">
+										                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{$value.id}">
+										                          <i class="fa fa-windows"></i>&nbsp;&nbsp;&nbsp;{$value.style}
+										                        </a>
+										                      </div>
+										                      <div id="collapse{$value.id}" class="panel-collapse collapse">
+										                        <div class="panel-body text-sm panel-success text-center">
+										                         	<div class="doc-buttons">
+		{if !empty($style_two)}
+			{foreach $style_two as $val}
+				{if $val.pid == $value.id}
+														                <a href="#"  onclick="style_select(this)" class="btn btn-s-md btn-info btn-rounded">{$val.style}</a>
+				{/if}
+			{/foreach}
+		{/if}												                
+														            </div>
+										                        </div>
+										                      </div>
+										                    </div>
+										                 </div>
+	{/foreach}
+{/if}														
+													</div>
+
+													<!-- 菜单遍历  结束-->
+												</section>
+											</section>
+										</aside>
+										<!-- / side content -->
+										<section>
+											<section class="vbox">
+												<section class="scrollable padder-lg">
+													<br>
+													<h2 class="font-thin m-b style_title">全部</h2>
+													<div class="row row-sm search_result">
+														<!-- 遍历开始 -->
+												
+														<!-- 遍历结束 -->
+													</div>
+													<div id="fenye">
+													<!-- 分页  -->
+													<div id="app" style="text-align: center;margin-top: 10px;">
+														<navigation :pages="pages" :current.sync="pageNo" @navpage="msgListView"></navigation>
+													</div>
+													<script src="/js/vue.min.js"></script>
+													<script type="text/javascript" src="/js/pagination.min.js"></script>
+													<!-- 分页结束 -->
+													</div>
+												</section>
+											</section>
+										</section>
+									</section>
+								</section>
+							</section>
+							<a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+						</section>
+					</section>
+				</section>
+			</section>
+{if !empty($Request.session.username)}
+  <!--添加快捷方式模态框开始-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="add_list">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">收藏到歌单 </h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <div class="shortcut-add-box-right">
+          <ul>
+{if !empty($song_list)}
+  {foreach $song_list as $value}
+            <li class="active" id="li1" onclick="add_list({$value.id})"  class="close mid" data-dismiss="modal" aria-hidden="true">
+              <i class="icon-grid"></i>
+              <span>{$value.list}</span>
+            </li>
+  {/foreach}
+{/if}
+            <li onclick="add_mylist(this)">
+              <i class="fa fa-plus"></i>
+              <span>新建歌单</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+    <div class="modal-content" id="add_mylist" style="display: none;">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">创建新歌单</h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <div class="shortcut-add-box-right">
+          <div class="car-info-shortcut shortcut-element-list">
+            <h5><span>歌单名称</span></h5>
+            <ul class="shortcut-element-box clearfix">
+              <li>
+                <i class="fa fa-car"></i>
+                <input type="text" placeholder="请输入歌单名..." id="listName">
+              </li>
+            </ul>
+          </div>
+          <div class="car-info-shortcut shortcut-element-list">
+            <h5><span>歌单介绍</span></h5>
+            <ul class="shortcut-element-box clearfix">
+              <li>
+                <i class="fa fa-car"></i>
+                <input type="text" id="listContent">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="shortcutEnter" onclick="confirm_add()" class="close mid" data-dismiss="modal" aria-hidden="true">创建并添加歌曲</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!--添加快捷方式模态框结束-->
+{/if}
+			<script src="/js/jquery.min.js"></script>
+			<!-- Bootstrap -->
+			<script src="/js/bootstrap.js"></script>
+			<!-- App -->
+			<script src="/js/app.js"></script>
+			<script src="/js/geners.js"></script>
+			<script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+			<!-- <script src="/js/app.plugin.js"></script> -->
+			<script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+			<script type="text/javascript" src="/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+			<script src="/js/plug-in.js"></script>
+		</body>
+
+	</html>
+	<script>
+  function content(id)
+  {
+    $.Pop('<div class="form-group"><textarea class="form-control fenxiang" rows="6" data-minwords="6" data-required="true" placeholder="Type your message"></textarea></div>','alert',function(){
+      var message = $('.fenxiang').val();
+      $.ajax({
+        type:'get',
+        dataType:'json',
+        url:'/index/index/share',
+        data:{id:id,content:message},
+        async:true,
+        success:share_result
+      });
+    })
+  }
+
+  function share_result(data)
+  {
+    var state = JSON.parse(data).state;
+    if (state == 1) {
+      alert('分享成功');
+    }
+    if (state == 2) {
+      alert('分享失败');
+    }
+    if (state == 3) {
+      alert('您尚未登录,请返回登录...');
+      window.parent.location.replace("/index/user/index");
+    }
+  }
+  
+</script>

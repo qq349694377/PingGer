@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>  
+  <meta charset="utf-8" />
+  <title>Musik | Web Application</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+  <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font.css" type="text/css" />
+  <link rel="stylesheet" href="/css/app.css" type="text/css" />  
+  <link rel="stylesheet" href="/css/style2.css" type="text/css" />  
+    <!--[if lt IE 9]>
+    <script src="js/ie/html5shiv.js"></script>
+    <script src="js/ie/respond.min.js"></script>
+    <script src="js/ie/excanvas.js"></script>
+  <![endif]-->
+</head>
+<body class="">
+  <section class="vbox">
+    <section>
+      <section class="hbox stretch">
+        <!-- .aside -->
+        <!-- /.aside -->
+        <section id="content">
+          <section class="vbox">
+            <section class="w-f-md" id="bjax-target" style="bottom: 60px;">
+              <section class="hbox stretch">
+                <!-- side content -->
+                <!-- / side content -->
+                <section>
+                  <section class="vbox">
+                    <section class="scrollable padder-lg">
+                      <h2 class="font-thin m-b">歌单</h2>
+                      <div class="row row-sm">
+<!-- 歌单信息 -->
+                          <div class="col-lg-12">
+                            <div class="col-lg-4">
+                              <section class="panel panel-default" style="background: rgba(255, 255, 255, 0.1);">
+                                <div class="panel-body">
+                                  <div class="clearfix text-center m-t">
+                                    <div class="inline">
+                                      <div class="easypiechart" data-percent="100" data-line-width="5" data-bar-color="#4cc0c1" data-track-Color="#f5f5f5" data-scale-Color="false" data-size="134" data-line-cap='butt' data-animate="1000">
+                                        <div class="thumb-lg">
+                                          <img src="{$list.poster}" alt="...">
+                                        </div>
+                                      </div>
+                                      <div id="listId" style="display: none;">{$list.id}</div>
+                                      <div class="h4 m-t m-b-xs">{$list.list}</div>
+                                    </div>                      
+                                  </div>
+                                </div>
+                                <footer class="panel-footer bg-info text-center">
+                                  <div class="row pull-out">
+                                    <div class="col-xs-4">
+                                      <div class="padder-v">
+                                        <span class="m-b-xs h3 block text-white">{$list.sum}</span>
+                                        <small class="text-muted">歌曲总量</small>
+                                      </div>
+                                    </div>
+                                    <div class="col-xs-4 dk">
+                                      <div class="padder-v">
+{if empty($Request.session.username) || $Request.session.username != $list.author}
+                                        <span class="m-b-xs h3 block text-white"><a href="#" data-toggle="class"><i class="fa fa-plus-circle text"  onclick="save_list({$list.id})"></i><i class="fa fa-check-circle text-active text-white" onclick="save_cancel({$list.id})"></i></a></span>
+                                        <small class="text-muted">收藏 ({$list.collect})</small>
+
+{/if}
+                                      </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                      <div class="padder-v">
+                                        <span class="m-b-xs h3 block text-white"><i class="icon-share-alt" onclick="list_fenxiang()"></i></span>
+                                        <small class="text-muted">分享</small>
+                                      </div>
+                                    </div>
+                                    <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare list_fen" style="display:none;">分享：<a class="bds_tsina"></a><a class="bds_qzone"></a><a class="bds_tqq"></a><a class="bds_renren"></a><span class="bds_more"></span><a class="shareCount"></a></div>
+                                  <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6574585" ></script> 
+                                  <script type="text/javascript" id="bdshell_js"></script> 
+                                  <script type="text/javascript">
+                              document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+                              </script>
+                                  </div>
+                                </footer>
+                              </section>
+                            </div>
+
+                            <div class="col-lg-6" style="float: bottom;">
+                              <div class="panel-group m-b" id="accordion2" style="background: rgba(255, 255, 255, 0.1);">
+                                <div class="panel panel-default">
+                                  <div class="panel-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                                      创建者 {$list.author}
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="panel-group m-b" id="accordion2" style="background: rgba(255, 255, 255, 0.1);">
+                                <div class="panel panel-default">
+                                  <div class="panel-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                                      创建于 {$list.create_time|date="Y-m-d",###}
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+
+                                <div class="panel panel-default" style="background: rgba(255, 255, 255, 0.1);">
+                                  <div class="panel-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                      简介
+                                    </a>
+                                  </div>
+                                  <div id="collapseOne" class="panel-collapse in">
+                                    <div class="panel-body text-sm">
+                                      {$list.content}
+                                    </div>
+                                  </div>
+                                </div>     
+                            </div>
+                          </div>
+<!-- 歌单信息结束 -->
+<!-- 歌单歌曲列表 -->
+<div class="row" id="songList">
+                        
+</div>
+<!-- 歌单歌曲列表结束 -->
+                    <div class="col-lg-12">
+                      <ul class="pagination pagination" style="margin-left: 40%;">
+                        <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+                      </ul>
+                    </div>
+                    </section>                    
+                  </section>
+                </section>
+              </section>
+            </section>
+          </section>
+          <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+        </section>
+      </section>
+    </section>    
+  </section>
+  {if !empty($Request.session.username)}
+  <!--添加快捷方式模态框开始-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="add_list">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">收藏到歌单 </h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <div class="shortcut-add-box-right">
+          <ul>
+{if !empty($song_list)}
+  {foreach $song_list as $value}
+            <li class="active" id="li1" onclick="add_list({$value.id})"  class="close mid" data-dismiss="modal" aria-hidden="true">
+              <i class="icon-grid"></i>
+              <span>{$value.list}</span>
+            </li>
+  {/foreach}
+{/if}
+            <li onclick="add_mylist(this)">
+              <i class="fa fa-plus"></i>
+              <span>新建歌单</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+    <div class="modal-content" id="add_mylist" style="display: none;">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">创建新歌单</h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <div class="shortcut-add-box-right">
+          <div class="car-info-shortcut shortcut-element-list">
+            <h5><span>歌单名称</span></h5>
+            <ul class="shortcut-element-box clearfix">
+              <li>
+                <i class="fa fa-car"></i>
+                <input type="text" placeholder="请输入歌单名..." id="listName">
+              </li>
+            </ul>
+          </div>
+          <div class="car-info-shortcut shortcut-element-list">
+            <h5><span>歌单介绍</span></h5>
+            <ul class="shortcut-element-box clearfix">
+              <li>
+                <i class="fa fa-car"></i>
+                <input type="text" id="listContent">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="shortcutEnter" onclick="confirm_add()" class="close mid" data-dismiss="modal" aria-hidden="true">创建并添加歌曲</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!--添加快捷方式模态框结束-->
+{/if} 
+  <script src="/js/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="/js/bootstrap.js"></script>
+  <!-- App -->
+  <script src="/js/app.js"></script>  
+  <script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/js/app.plugin.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+  <!-- <script type="text/javascript" src="/js/jPlayer/add-on/jplayer.playlist.min.js"></script> -->
+  <script type="text/javascript" src="/js/jPlayer/listSong.js"></script>
+  <script src="/js/plug-in.js"></script>
+</body>
+</html>
+<script>
+  function content(id)
+  {
+    $.Pop('<div class="form-group"><textarea class="form-control fenxiang" rows="6" data-minwords="6" data-required="true" placeholder="Type your message"></textarea></div>','alert',function(){
+      var message = $('.fenxiang').val();
+      $.ajax({
+        type:'get',
+        dataType:'json',
+        url:'/index/index/share',
+        data:{id:id,content:message},
+        async:true,
+        success:share_result
+      });
+    })
+  }
+
+  function share_result(data)
+  {
+    var state = JSON.parse(data).state;
+    if (state == 1) {
+      alert('分享成功');
+    }
+    if (state == 2) {
+      alert('分享失败');
+    }
+    if (state == 3) {
+      alert('您尚未登录,请返回登录...');
+      window.parent.location.replace("/index/user/index");
+    }
+  }
+
+  function list_fenxiang()
+  {
+    $('.list_fen').show();
+  }
+  
+</script>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>  
+  <meta charset="utf-8" />
+  <title>Musik | Web Application</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+  <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font.css" type="text/css" />
+  <link rel="stylesheet" href="/css/app.css" type="text/css" />  
+  <link rel="stylesheet" type="text/css" href="/css/style2.css" />
+  <link rel="stylesheet" type="text/css" href="/css/resetPass.css" />
+  <!--[if lt IE 9]>
+    <script src="js/ie/html5shiv.js"></script>
+    <script src="js/ie/respond.min.js"></script>
+    <script src="js/ie/excanvas.js"></script>
+  <![endif]-->
+</head>
+<body class="" id="body">
+  <section class="vbox">
+    <section>
+      <section class="hbox stretch">
+        <!-- .aside -->
+        <!-- /.aside -->
+        <section id="content">
+          <section class="vbox">
+            <section class="scrollable" style="bottom: 60px;">
+              <section class="hbox stretch">
+                <aside class="col-lg-3 b-l">
+                  <section class="vbox">
+                    <section class="scrollable">
+                      <div class="wrapper">
+                        <div class="text-center m-b m-t">
+                          <a href="#" class="thumb-lg">
+{if empty($user.photo)}
+                            <img src="/images/a0.png" class="img-circle pic_header">
+{else}
+                            <img src="{$user.photo}" class="img-circle pic_header">
+{/if}                           
+                          </a>
+                          <div>
+                            <div class="h3 m-t-xs m-b-xs">{$user.nickname}</div>
+                            <a href="#" data-toggle="class" onclick="reset()"><small class="text-muted">设置</small></a>
+                          </div>                
+                        </div>
+                        <div class="panel wrapper">
+                          <div class="row text-center">
+                            <div class="col-xs-6">
+                              <a href="#">
+                                <span class="m-b-xs h4 block">{$sum}</span>
+                                <small class="text-muted">喜欢的歌曲</small>
+                              </a>
+                            </div>
+                            <div class="col-xs-6">
+                              <a href="#">
+                                <span class="m-b-xs h4 block">{$sum_list}</span>
+                                <small class="text-muted">我的歌单</small>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <small class="text-uc text-xs text-muted">地区</small>
+{if empty($user.province)}
+                          <p>未填写</p>
+{else}
+                          <p>{$user.province} &nbsp;{$user.city}</p>
+{/if}
+                          <small class="text-uc text-xs text-muted">个人介绍</small>
+{if empty($user.autograph)}
+                          <p>暂无介绍</p>
+{else}
+                          <p>{$user.autograph}</p>
+{/if}
+                          <div class="line"></div>
+                        </div>
+                      </div>
+                    </section>
+                  </section>
+                </aside>
+                <aside class="bg-white profile" style="display: none;">
+                  <section class="vbox">
+                    <header class="header bg-light lt">
+                      <ul class="nav nav-tabs nav-white">
+                        <li class="active"><a href="#activity" data-toggle="tab">资料设置</a></li>
+                        <li class=""><a href="#interaction" data-toggle="tab">修改密码</a></li>
+                      </ul>
+                    </header>
+                    <section class="scrollable">
+                      <div class="tab-content">
+                        <div class="tab-pane active" id="activity">
+                          <section class="panel panel-default">
+                            <div class="panel-body">
+                              <form class="form-horizontal" data-validate="parsley"  onSubmit="return confirm();">
+                              <section class="panel panel-default">
+                                <div class="panel-body">                    
+                                  <div class="form-group">
+                                    <label class="col-sm-3 control-label">头像</label>
+                                    <div class="col-sm-9">
+{if empty($user.photo)}
+                                    <img id='images' src="/images/a0.png" width="128" class="img-circle">
+{else}
+                                    <img id='images' src="{$user.photo}" width="128" class="img-circle">
+{/if}    
+                                    </div>
+                                    <div class="col-sm-9">
+                                    <label class="col-sm-5 control-label"></label>
+                                    <a href="#" data-toggle="class" onclick="reset()"><small class="text-muted" data-toggle="modal" data-target="#myModal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置新头像</small></a>
+                                    </div>
+                                  </div>
+                                  <div class="line line-dashed b-b line-lg pull-in"></div>
+                                  <div class="form-group">
+                                    <label class="col-sm-3 control-label">性别</label>
+                                    <div class="col-sm-9">
+                                      <select name="sex" class="main2_3_3" id="sex">
+                                        <option value="0">保密</option>
+                                        <option value="2" {$user.sex == '2'? "selected":null }>女</option>
+                                        <option value="1" {$user.sex == '1'? "selected":null }>男</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="line line-dashed b-b line-lg pull-in"></div>
+                                  <div class="form-group">
+                                    <label class="col-sm-3 control-label">生日</label>
+                                    <div class="col-sm-9">
+                                      <select name="brithyear" class="main2_3_4" id="brithyear">
+                <option value="0" {$brithyear == '0'? "selected":null }>-年-</option>
+                <option value="2017" {$brithyear == '2017'? "selected":null }>2017</option>
+                <option value="2016" {$brithyear == '2016'? "selected":null }>2016</option>
+                <option value="2015" {$brithyear == '2015'? "selected":null }>2015</option>
+                <option value="2014" {$brithyear == '2014'? "selected":null }>2014</option>
+                <option value="2013" {$brithyear == '2013'? "selected":null }>2013</option>
+                <option value="2012" {$brithyear == '2012'? "selected":null }>2012</option>
+                <option value="2011" {$brithyear == '2011'? "selected":null }>2011</option>
+                <option value="2010" {$brithyear == '2010'? "selected":null }>2010</option>
+                <option value="2009" {$brithyear == '2009'? "selected":null }>2009</option>
+                <option value="2008" {$brithyear == '2008'? "selected":null }>2008</option>
+                <option value="2007" {$brithyear == '2007'? "selected":null }>2007</option>
+                <option value="2006" {$brithyear == '2006'? "selected":null }>2006</option>
+                <option value="2005" {$brithyear == '2005'? "selected":null }>2005</option>
+                <option value="2004" {$brithyear == '2004'? "selected":null }>2004</option>
+                <option value="2003" {$brithyear == '2003'? "selected":null }>2003</option>
+                <option value="2002" {$brithyear == '2002'? "selected":null }>2002</option>
+                <option value="2001" {$brithyear == '2001'? "selected":null }>2001</option>
+                <option value="2000" {$brithyear == '2000'? "selected":null }>2000</option>
+                <option value="1999" {$brithyear == '1999'? "selected":null }>1999</option>
+                <option value="1998" {$brithyear == '1998'? "selected":null }>1998</option>
+                <option value="1997" {$brithyear == '1997'? "selected":null }>1997</option>
+                <option value="1996" {$brithyear == '1996'? "selected":null }>1996</option>
+                <option value="1995" {$brithyear == '1995'? "selected":null }>1995</option>
+                <option value="1994" {$brithyear == '1994'? "selected":null }>1994</option>
+                <option value="1993" {$brithyear == '1993'? "selected":null }>1993</option>
+                <option value="1992" {$brithyear == '1992'? "selected":null }>1992</option>
+                <option value="1991" {$brithyear == '1991'? "selected":null }>1991</option>
+                <option value="1990" {$brithyear == '1990'? "selected":null }>1990</option>
+                <option value="1989" {$brithyear == '1989'? "selected":null }>1989</option>
+                <option value="1988" {$brithyear == '1988'? "selected":null }>1988</option>
+                <option value="1987" {$brithyear == '1987'? "selected":null }>1987</option>
+                <option value="1986" {$brithyear == '1986'? "selected":null }>1986</option>
+                <option value="1985" {$brithyear == '1985'? "selected":null }>1985</option>
+                <option value="1984" {$brithyear == '1984'? "selected":null }>1984</option>
+                <option value="1983" {$brithyear == '1983'? "selected":null }>1983</option>
+                <option value="1982" {$brithyear == '1982'? "selected":null }>1982</option>
+                <option value="1981" {$brithyear == '1981'? "selected":null }>1981</option>
+                <option value="1980" {$brithyear == '1980'? "selected":null }>1980</option>
+                <option value="1979" {$brithyear == '1979'? "selected":null }>1979</option>
+                <option value="1978" {$brithyear == '1978'? "selected":null }>1978</option>
+                <option value="1977" {$brithyear == '1977'? "selected":null }>1977</option>
+                <option value="1976" {$brithyear == '1976'? "selected":null }>1976</option>
+                <option value="1975" {$brithyear == '1975'? "selected":null }>1975</option>
+                <option value="1974" {$brithyear == '1974'? "selected":null }>1974</option>
+                <option value="1973" {$brithyear == '1973'? "selected":null }>1973</option>
+                <option value="1972" {$brithyear == '1972'? "selected":null }>1972</option>
+                <option value="1971" {$brithyear == '1971'? "selected":null }>1971</option>
+                <option value="1970" {$brithyear == '1970'? "selected":null }>1970</option>
+                <option value="1969" {$brithyear == '1969'? "selected":null }>1969</option>
+                <option value="1968" {$brithyear == '1968'? "selected":null }>1968</option>
+                <option value="1967" {$brithyear == '1967'? "selected":null }>1967</option>
+                <option value="1966" {$brithyear == '1966'? "selected":null }>1966</option>
+                <option value="1965" {$brithyear == '1965'? "selected":null }>1965</option>
+                <option value="1964" {$brithyear == '1964'? "selected":null }>1964</option>
+                <option value="1963" {$brithyear == '1963'? "selected":null }>1963</option>
+                <option value="1962" {$brithyear == '1962'? "selected":null }>1962</option>
+                <option value="1961" {$brithyear == '1961'? "selected":null }>1961</option>
+                <option value="1960" {$brithyear == '1960'? "selected":null }>1960</option>
+                <option value="1959" {$brithyear == '1959'? "selected":null }>1959</option>
+                <option value="1958" {$brithyear == '1958'? "selected":null }>1958</option>
+                <option value="1957" {$brithyear == '1957'? "selected":null }>1957</option>
+                <option value="1956" {$brithyear == '1956'? "selected":null }>1956</option>
+                <option value="1955" {$brithyear == '1955'? "selected":null }>1955</option>
+                <option value="1954" {$brithyear == '1954'? "selected":null }>1954</option>
+                <option value="1953" {$brithyear == '1953'? "selected":null }>1953</option>
+                <option value="1952" {$brithyear == '1952'? "selected":null }>1952</option>
+                <option value="1951" {$brithyear == '1951'? "selected":null }>1951</option>
+                <option value="1950" {$brithyear == '1950'? "selected":null }>1950</option>
+                <option value="1949" {$brithyear == '1949'? "selected":null }>1949</option>
+                <option value="1948" {$brithyear == '1948'? "selected":null }>1948</option>
+                <option value="1947" {$brithyear == '1947'? "selected":null }>1947</option>
+                <option value="1946" {$brithyear == '1946'? "selected":null }>1946</option>
+                <option value="1945" {$brithyear == '1945'? "selected":null }>1945</option>
+                <option value="1944" {$brithyear == '1944'? "selected":null }>1944</option>
+                <option value="1943" {$brithyear == '1943'? "selected":null }>1943</option>
+                <option value="1942" {$brithyear == '1942'? "selected":null }>1942</option>
+                <option value="1941" {$brithyear == '1941'? "selected":null }>1941</option>
+                <option value="1940" {$brithyear == '1940'? "selected":null }>1940</option>
+                <option value="1939" {$brithyear == '1939'? "selected":null }>1939</option>
+                <option value="1938" {$brithyear == '1938'? "selected":null }>1938</option>
+                <option value="1937" {$brithyear == '1937'? "selected":null }>1937</option>
+                <option value="1936" {$brithyear == '1936'? "selected":null }>1936</option>
+                <option value="1935" {$brithyear == '1935'? "selected":null }>1935</option>
+                <option value="1934" {$brithyear == '1934'? "selected":null }>1934</option>
+                <option value="1933" {$brithyear == '1933'? "selected":null }>1933</option>
+                <option value="1932" {$brithyear == '1932'? "selected":null }>1932</option>
+                <option value="1931" {$brithyear == '1931'? "selected":null }>1931</option>
+                <option value="1930" {$brithyear == '1930'? "selected":null }>1930</option>
+                <option value="1929" {$brithyear == '1929'? "selected":null }>1929</option>
+                <option value="1928" {$brithyear == '1928'? "selected":null }>1928</option>
+                <option value="1927" {$brithyear == '1927'? "selected":null }>1927</option>
+                <option value="1926" {$brithyear == '1926'? "selected":null }>1926</option>
+                <option value="1925" {$brithyear == '1925'? "selected":null }>1925</option>
+                <option value="1924" {$brithyear == '1924'? "selected":null }>1924</option>
+                <option value="1923" {$brithyear == '1923'? "selected":null }>1923</option>
+                <option value="1922" {$brithyear == '1922'? "selected":null }>1922</option>
+                <option value="1921" {$brithyear == '1921'? "selected":null }>1921</option>
+                <option value="1920" {$brithyear == '1920'? "selected":null }>1920</option>
+                <option value="1919" {$brithyear == '1919'? "selected":null }>1919</option>
+                <option value="1918" {$brithyear == '1918'? "selected":null }>1918</option>
+              </select>
+              <select name="brithmonth" class="main2_3_4" id="brithmonth">
+                <option value="0" {$brithmonth == '0'? "selected":null }>-月-</option>
+                <option value="1" {$brithmonth == '1'? "selected":null }>1</option>
+                <option value="2" {$brithmonth == '2'? "selected":null }>2</option>
+                <option value="3" {$brithmonth == '3'? "selected":null }>3</option>
+                <option value="4" {$brithmonth == '4'? "selected":null }>4</option>
+                <option value="5" {$brithmonth == '5'? "selected":null }>5</option>
+                <option value="6" {$brithmonth == '6'? "selected":null }>6</option>
+                <option value="7" {$brithmonth == '7'? "selected":null }>7</option>
+                <option value="8" {$brithmonth == '8'? "selected":null }>8</option>
+                <option value="9" {$brithmonth == '9'? "selected":null }>9</option>
+                <option value="10" {$brithmonth == '10'? "selected":null }>10</option>
+                <option value="11" {$brithmonth == '11'? "selected":null }>11</option>
+                <option value="12" {$brithmonth == '12'? "selected":null }>12</option>
+              </select>
+              <select name="brithday" class="main2_3_4" id="brithday">
+                <option value="0" {$brithday == '0'? "selected":null }>-日-</option>
+                <option value="1" {$brithday == '1'? "selected":null }>1</option>
+                <option value="2" {$brithday == '2'? "selected":null }>2</option>
+                <option value="3" {$brithday == '3'? "selected":null }>3</option>
+                <option value="4" {$brithday == '4'? "selected":null }>4</option>
+                <option value="5" {$brithday == '5'? "selected":null }>5</option>
+                <option value="6" {$brithday == '6'? "selected":null }>6</option>
+                <option value="7" {$brithday == '7'? "selected":null }>7</option>
+                <option value="8" {$brithday == '8'? "selected":null }>8</option>
+                <option value="9" {$brithday == '9'? "selected":null }>9</option>
+                <option value="10" {$brithday == '10'? "selected":null }>10</option>
+                <option value="11" {$brithday == '11'? "selected":null }>11</option>
+                <option value="12" {$brithday == '12'? "selected":null }>12</option>
+                <option value="13" {$brithday == '13'? "selected":null }>13</option>
+                <option value="14" {$brithday == '14'? "selected":null }>14</option>
+                <option value="15" {$brithday == '15'? "selected":null }>15</option>
+                <option value="16" {$brithday == '16'? "selected":null }>16</option>
+                <option value="17" {$brithday == '17'? "selected":null }>17</option>
+                <option value="18" {$brithday == '18'? "selected":null }>18</option>
+                <option value="19" {$brithday == '19'? "selected":null }>19</option>
+                <option value="20" {$brithday == '20'? "selected":null }>20</option>
+                <option value="21" {$brithday == '21'? "selected":null }>21</option>
+                <option value="22" {$brithday == '22'? "selected":null }>22</option>
+                <option value="23" {$brithday == '23'? "selected":null }>23</option>
+                <option value="24" {$brithday == '24'? "selected":null }>24</option>
+                <option value="25" {$brithday == '25'? "selected":null }>25</option>
+                <option value="26" {$brithday == '26'? "selected":null }>26</option>
+                <option value="27" {$brithday == '27'? "selected":null }>27</option>
+                <option value="28" {$brithday == '28'? "selected":null }>28</option>
+                <option value="29" {$brithday == '29'? "selected":null }>29</option>
+                <option value="30" {$brithday == '30'? "selected":null }>30</option>
+              </select>
+                                    </div>
+                                  </div>
+                                  <div class="line line-dashed b-b line-lg pull-in"></div>
+                                  <div class="form-group">
+                                    <label class="col-sm-3 control-label">地区</label>
+                                    <div class="col-sm-9">
+                                    <select name="province" id="province" onchange="getCity()">
+{if empty($user.province)}
+                                      <option value="">省份</option>
+{else}
+                                      <option value="">{$user.province}</option>
+{/if}                                  
+                                    </select>
+                                    <select name="city" id="city">
+{if empty($user.city)}
+                                      <option value="">市/区</option>
+{else}
+                                      <option value="">{$user.city}</option>
+{/if}
+                                    </select>
+                                    </div>
+                                  </div>
+                                  <div class="line line-dashed b-b line-lg pull-in"></div>
+                                  <div class="form-group">
+                                    <label class="col-sm-3 control-label">手机号</label>
+                                    <div class="col-sm-9">
+                                      <input type="text" data-type="number" class="form-control" id="phone" value="{$user.phone}">
+                                    </div>
+                                  </div>
+                                  <div class="line line-dashed b-b line-lg pull-in"></div>
+                                  <div class="form-group">
+                                    <label class="col-sm-3 control-label">个性签名</label>
+                                    <div class="col-sm-9">
+                                      <textarea class="form-control" rows="6" data-minwords="6" data-required="true" id="autograph">{$user.autograph}</textarea>
+                                    </div>
+                                  </div>
+                                </div>
+                                <footer class="panel-footer text-right bg-light lter">
+                                  <button type="submit" class="btn btn-success btn-s-xs" onclick="setDetail()">确认修改</button>
+                                </footer>
+                              </section>
+                            </form> 
+                            </div>
+                          </section>
+                        </div>
+                        <div class="tab-pane" id="interaction">
+                          <div class="text-center wrapper">
+                            
+                            <form class="bs-example form-horizontal"  onSubmit="return confirm();">
+                                <div class="form-group">
+                                  <label class="col-lg-2 control-label">旧密码</label>
+                                  <div class="col-lg-10">
+                                    <input type="password" class="form-control password" placeholder="请输入密码...">
+                                    <span class="help-block m-b-none">您必须填写旧密码才能修改下面的资料.</span>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="col-lg-2 control-label">新密码</label>
+                                  <div class="col-lg-10">
+                                    <input type="password" class="form-control pass" placeholder="请输入新密码...">
+                                    <span class="help-block m-b-none">如不需要更改密码，此处请留空.</span>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="col-lg-2 control-label">确认新密码</label>
+                                  <div class="col-lg-10">
+                                    <input type="password" class="form-control newpass" placeholder="请输入新密码...">
+                                    <span class="help-block m-b-none">如不需要更改密码，此处请留空.</span>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="col-lg-2 control-label">邮箱</label>
+                                  <div class="col-lg-10">
+                                    <input type="email" class="form-control email" placeholder="请输入新邮箱地址...">
+                                    <span class="help-block m-b-none">取回密码时使用.</span>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="submit" class="btn btn-sm btn-default" onclick="resetPass()">确认修改</button>
+                                  </div>
+                                </div>
+                              </form>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </section>
+                </aside>
+                <aside class="aside-lg bg-light lter b-r">
+                  <section class="vbox">
+                    <section class="scrollable padder-v">
+                      <div class="panel">
+                        <h4 class="font-thin padder">我的动态</h4>
+                        <ul class="list-group">
+{if !empty($mvs)}
+  {foreach $mvs as $val}
+                          <li class="list-group-item">
+                              <p><a href="/index/index/blog?id={$val.id}" class="text-info">{$val.title}:</a> {$val.content} </p>
+                              <small class="block text-muted"><i class="fa fa-clock-o"></i> {$val.create_time|date="Y-m-d",###}</small>
+                          </li>
+  {/foreach}
+{else}
+                          <li class="list-group-item">
+                              <p>您还没有发布动态... </p>
+                          </li>
+{/if}
+                        </ul>
+                      </div>
+                      <div class="panel clearfix">
+                        <div class="panel-body">
+                          <div class="clear" style="text-align: right;">
+                            <a href="#" class="text-info" style="color: #cdcdcd;">查看更多 <i style="color: #cdcdcd;">&#10148;</i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </section>              
+                </aside>
+              </section>
+            </section>
+          </section>
+          <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+        </section>
+      </section>
+    </section>    
+  </section>
+  <!--添加快捷方式模态框开始-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="add_list">
+      <div class="modal-header clearfix mid">
+        <button type="button" class="close mid" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title shortcut-modal-title mid" id="myModalLabel">设置新头像</h4>
+      </div>
+      <div class="modal-body shortcut-add-box">
+        <form action="/index/user/upload_head" method="post" enctype="multipart/form-data" id="myForm">
+        <div class="shortcut-add-box-right" style="padding:50px 0 0 100px;">
+            <input type="file" class="main2_2_4_1" name="picture" />   
+        </div>
+        <div class="modal-footer" style="text-align: center;padding: 50px;">
+          <input type="submit" class="btn btn-primary" id="shortcutEnter" value="上传">
+        </div>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!--添加快捷方式模态框结束-->
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.form.js"></script>
+  <!-- Bootstrap -->
+  <script src="/js/bootstrap.js"></script>
+  <!-- App -->
+  <script src="/js/app.js"></script>  
+  <script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="/js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
+  <script src="/js/app.plugin.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/demo.js"></script>
+  <script type="text/javascript" src="/js/profile.js"></script>
+  <script type="text/javascript" src="/js/common.js"></script>
+<script>
+          //当省份的选择发生变化时调用 该方法   将市县加载到下拉选择框
+        function getCity()
+    {
+        //1.获取省份选择框的对象
+        var provincesobj=document.getElementById("province");
+        //2.获取市县选择框的对象
+        var cityobj=document.getElementById("city");
+        //3.获取被选择的省份的索引
+        var index=provincesobj.selectedIndex;
+        
+        //alert(provincesobj[index].value+","+provincesobj[index].text);
+        ////4.通过省份的索引获取它的value值，value值也是它在数组的索引值
+        var value=provincesobj[index].value;;
+        //5.获取对应省份的市县数组
+        var cityName=cityArr[value];
+        //6.将下拉框清楚索引为0之后的，只保留第一个
+        cityobj.length=1;
+        //通过循环遍历市县元素给下拉框赋值
+        $('#city').html('<option value="">市/区</option>');
+        for(var i=1;i<cityArr[value].length;i++)
+        {
+            // cityobj.options[cityobj.options.length]=new Option(cityName[i],i);
+            $('#city').append("<option value='"+i+"'>"+cityName[i]+"</option>");
+            
+        }
+        
+    }
+
+    /*************上传头像**********/
+
+function up_result(data)
+{
+  var state = JSON.parse(data).state;
+  if (state == 1) {
+  alert('没有选择所要上传的头像');
+  } else if (state == 2) {
+  alert('上传失败');
+  } else {
+    console.log(state)
+    console.log(document.getElementById('myModal'))
+    document.getElementById('images').src = '/uploads/'+state;
+    document.getElementById('myModal').style.display = 'none';
+    document.getElementById('body').lastChild.remove();
+  }
+}
+
+$('#myForm').submit(function() {   
+    $(this).ajaxSubmit(function(data) { 
+        up_result(data);  
+    });  
+    return false;  
+}); 
+/*************上传头像 end**********/
+
+</script> 
+</body>
+</html>

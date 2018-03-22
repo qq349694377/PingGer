@@ -1,0 +1,185 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/admin/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="/admin/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>MV列表</title>
+</head>
+<body>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+		<span class="l">
+			<a href="javascript:;" id='piliang' class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+		</span> <span class="r">共有数据：<strong id='shuj'></strong> 条</span> </div>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-bg table-sort">
+			<thead>
+				<tr class="text-c">
+					<th width="25"></th>
+					<th width="40">ID</th>
+					<th width="150">歌单名字</th>
+					<th width="80">创建者</th>
+					<th width="100">歌单封面</th>
+					<th width="150">歌单简介</th>
+					<th>歌曲id</th>
+					<th width="70">创建时间</th>
+					<th width="50">歌曲总数</th>					
+					<th width="50">收藏数量</th>
+					<th width="100">操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbody">
+				
+			</tbody>
+		</table>
+		<div id="page" style="text-align: center;margin-top: 20px;">
+			<a class='href' href="" style="margin-right: 20px; ">首页</a>
+			<a class='href' href="" style="margin-right: 20px; ">上一页</a>
+			<a class='href' href="" style="margin-right: 20px; ">下一页</a>
+			<a class='href' href="" style="margin-right: 20px; ">尾页</a>
+		</div>
+	</div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/admin/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/admin/lib/layer/2.4/layer.js"></script>
+<!-- <script type="text/javascript" src="/admin/static/h-ui/js/H-ui.min.js"></script> -->
+ <!-- <script type="text/javascript" src="/admin/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去  -->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="/admin/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="/admin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="/admin/lib/laypage/1.2/laypage.js"></script>
+
+<!-- 自己引用的 -->
+<script type="text/javascript" src='/js/jquery-1.11.3.min.js'></script>
+<script type="text/javascript" src="/js/ajax.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url:'/admin/listsong/selectlist',
+			data:{},
+			type:'post',
+			success:success
+		});
+
+		function success(data)
+		{
+			var obj = JSON.parse(data);
+			// console.log(obj);
+			$('tbody').html('');
+			$('#shuj').html(obj.num);
+			for(var i=0;i<obj.data.length;i++){
+				// tr
+				var tr = $("<tr class='text-c'></tr>");
+				// 数据
+				var shuju = $("<td><input name='checkname' type='checkbox' value='"+obj.data[i].id+"'></td><td>"+obj.data[i].id+"</td><td>"+obj.data[i].list+"</td><td>"+obj.data[i].author+"</td><td class='text-l text-c'><img src='"+obj.data[i].poster+"'style='width:63px;height:63px;'></td><td class='text-c'>"+obj.data[i].content+"</td><td class='text-c'>"+obj.data[i].childrenid+"</td><td class='text-c'>"+obj.data[i].create_time+"</td><td class='text-c'>"+obj.data[i].sum+"</td><td class='text-c'>"+obj.data[i].collect+"</td>");
+				//操作框的td
+				var td = $("<td class='f-14 product-brand-manage'></td>");
+				// 删除按钮
+				var c = $("<a style='text-decoration:none' class='ml-5' href='javascript:;' title='删除'><i class='Hui-iconfont'>&#xe6e2;</i></a>");
+				$('#tbody').append(tr);
+				tr.append(shuju);
+				tr.append(td);
+				td.append(c);
+								
+				//删除音乐
+				c.click(function(){
+					var a = confirm('确认要删除吗？');
+					if(a){
+						var id = $(this).parent().parent().children().eq(0).children().eq(0).val();
+						$.ajax({
+							type:'post',
+							url:'/admin/listsong/dellistsong',
+							data:{id:id},
+							async:false,
+							success:delsong
+						});
+						var asd = $(this).parent().parent().remove();
+						a = $('#shuj').html();
+						$('#shuj').html(a-1);
+					}
+					return false;			
+				});
+				//通过obj.allPage依次给上面每个a标签的href属性设置
+				var oPage =  obj.allPage;
+				
+				var j = 0;
+				for (var name in oPage) {
+					//console.log(name);
+					$('.href')[j].href = 'javascript:test(\'' +oPage[name] +'\')';
+					j++;
+				}
+			}
+			window.test = function(url){
+				test1(url);
+			};
+
+			function test1(url)
+			{
+				$.ajax({
+					method:'get',
+	                url:url,
+	                async:true,
+	                data:null,
+	                success:success
+				});
+			}
+		}
+		function delsong(data)
+		{
+			var obj = JSON.parse(data);
+			if(obj.state == 1){
+				alert('删除成功');
+			}else if(obj.state == 2){
+				alert('删除失败');
+			}
+		}
+
+		
+	});
+
+	//批量删除
+	$('#piliang').click(function(){
+		// var a = $(":checkbox").checked;
+		text = $("input:checkbox[name='checkname']:checked").map(function(index,elem) {
+            return $(elem).val();
+        }).get().join(',');
+		if(text == ''){
+			alert('请选中要删除的项');
+			return false;
+		}
+
+		//将选中的项的id传到PHP
+		$.ajax({
+			data:{id:text},
+			type:'post',
+			url:'/admin/listsong/delete1'
+		});
+
+		alert('删除成功');
+		//清除当前一行
+		text1 = $("input:checkbox[name='checkname']:checked").map(function(index,elem) {
+            return $(elem).parent().parent().remove();
+        });
+	});
+
+</script>
+</body>
+</html>

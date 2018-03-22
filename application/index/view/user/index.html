@@ -1,0 +1,176 @@
+  <!DOCTYPE html>
+  <html lang="en" class="app">
+  <head>  
+    <meta charset="utf-8" />
+    <title>Musik | 登录</title>
+    <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+    <link rel="stylesheet" href="/css/font.css" type="text/css" />
+    <link rel="stylesheet" href="/css/app.css" type="text/css" />  
+    <link rel="stylesheet" type="text/css" href="/css/verify.css">
+    
+    <!-- 自己引用的 -->
+    <script type="text/javascript" src='/js/jquery-1.11.3.min.js'></script>
+    <script type="text/javascript" src="/js/ajax.js"></script>
+    <!-- 第三方登陆js -->
+    <script type="text/javascript" src="http://open.51094.com/user/myscript/15a72bfa86781b.html"></script>
+
+  </head>
+  <body class="bg-info dker">
+    <section id="content" class="m-t-lg wrapper-md animated fadeInUp">    
+      <div class="container aside-xl">
+        <a class="navbar-brand block" href="/index/index/index"><span class="h1 font-bold">Musik</span></a>
+        <section class="m-b-lg">
+          <header class="wrapper text-center">
+            <strong></strong>
+          </header>
+          <form action="">
+
+            <div class="form-group">
+              <input id="name" type="text" placeholder="Nickname or Phone" class="form-control rounded input-lg text-center no-border" value="">
+              <span id="xinxi"></span>
+            </div>
+            <div class="form-group">
+               <input id="pwd" type="password" placeholder="Password" class="form-control rounded input-lg text-center no-border" value="">
+               <span id="xinxi1"></span>
+            </div>
+            
+            <div class="form-group">
+              <div id="mpanel1" class="">
+              <span id="xinxi2"></span>
+              </div>
+            </div>
+
+            <button id="denglu" type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded">
+              <i class="icon-arrow-right pull-right"></i>
+              <span class="m-r-n-lg">登录</span>
+            </button>
+
+            <div class="text-center m-t m-b"><a href="/index/user/forget"><small>忘记密码?</small></a></div>
+            <div class="line line-dashed"></div>
+            <p>使用第三方登陆<span id="hzy_fast_login"></span></p>
+            <p class="text-muted text-center"><small>没有账号?</small></p>
+            <a href="/index/user/register" class="btn btn-lg btn-info btn-block rounded">创建一个账户</a>
+          </form>
+        </section>
+      </div>
+    </section>
+    <!-- footer -->
+    <footer id="footer">
+      <div class="text-center padder">
+        <p>
+          <small>MADE IN Yong Ger<br>&copy; 2018</small>
+        </p>
+      </div>
+    </footer>
+    <!-- / footer -->
+    <script src="/js/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/js/bootstrap.js"></script>
+    <!-- App -->
+    <script src="/js/app.js"></script>  
+    <script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="/js/verify.js" ></script>
+      <script src="/js/app.plugin.js"></script>
+    <script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+    <script type="text/javascript" src="/js/jPlayer/demo.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+          // 验证昵称
+         var ret = /^[a-zA-Z][a-zA-Z0-9]*$/;
+         // 验证手机号
+         var reg = /^1[0-9]{10}$/;
+          var yzn = false;
+          //验证用户名的个数
+          $('#name').blur(function(){
+            var name = this.value;
+            if (!ret.test(name) && !reg.test(name)){
+             $('#xinxi').html('用户名应该5-12位或使用手机号');
+             yzn = true;
+            }else{
+             $('#xinxi').html('');
+             yzn = false;
+            }
+          });
+
+          //验证密码个数
+          var yzm = false;
+          $('#pwd').blur(function(){
+            var pwd = this.value;
+            if (!ret.test(pwd)){
+              $('#xinxi1').html('密码应该5-12位，且是字母开头');
+              yzm = true;
+            } else {
+              $('#xinxi1').html('');
+              yzm = false;
+            }
+          });
+
+          //滑动解锁
+          var sub = true;
+          $('#mpanel1').slideVerify({
+            type : 1,   //类型
+            vOffset : 5,  //误差量，根据需求自行调整
+            barSize : {
+              width : '100%',
+              height : '40px',
+            },
+            ready : function() {
+            },
+            success : function() {
+              // alert('验证成功，添加你自己的代码！');
+              $('#xinxi2').html('');
+              sub = false;
+              // 
+              //......后续操作
+            },
+            error : function() {
+              $('#xinxi2').html('再来一次');
+              sub = true;
+              //alert('验证失败！');
+            }
+
+          });
+
+          // 点击登录
+          $('#denglu').click(function(){
+
+             if(yzn || yzm || !$('#xinxi').html()=='' || !$('#xinxi1').html()=='' || sub){
+                return false;
+             }
+
+             var name = $('#name').val();
+             var pwd = $('#pwd').val();
+             $.ajax({
+              url:'/index/user/dologin',
+              data:{name:name,pwd:pwd},
+              success:success,
+              type:'post',
+              async:false
+             }); 
+            return false;
+          });
+
+          function success(data)
+          {
+            var obj = JSON.parse(data);
+            if(obj.state == 1){
+              alert('用户名不存在');
+            }else if(obj.state == 2){
+              alert('密码错误');
+            }else if(obj.state == 3){
+              alert('登录成功');
+              window.location.replace("/index/index/index");
+            }
+          }
+      });      
+    </script>
+  </body>
+  </html>

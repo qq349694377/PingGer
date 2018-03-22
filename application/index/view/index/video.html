@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>  
+  <meta charset="utf-8" />
+  <title>Musik | Web Application</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+  <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font.css" type="text/css" />
+  <link rel="stylesheet" href="/css/app.css" type="text/css" />  
+    <!--[if lt IE 9]>
+    <script src="js/ie/html5shiv.js"></script>
+    <script src="js/ie/respond.min.js"></script>
+    <script src="js/ie/excanvas.js"></script>
+  <![endif]-->
+</head>
+<body class="">
+  <section class="vbox">
+    <section>
+      <section class="hbox stretch">
+        <!-- .aside -->
+        <!-- /.aside -->
+        <section id="content">
+          <section class="vbox" id="bjax-el">
+            <section class="scrollable padder-lg" style="bottom: 60px;">
+              <div class="doc-buttons" style="padding: 20px;">
+                <a href="#" class="btn btn-s-md btn-dark" onclick="mv_style(this)">内地</a>                
+                <a href="#" class="btn btn-s-md btn-primary" onclick="mv_style(this)">港台</a>
+                <a href="#" class="btn btn-s-md btn-success" onclick="mv_style(this)">欧美</a>
+                <a href="#" class="btn btn-s-md btn-info" onclick="mv_style(this)">日韩</a>
+              </div>
+              <h3 class="font-thin m-b style_name">内地</h3>
+              <div class="row row-sm mv_list">
+
+                <!-- 下面的视频列表 一页12个 -->
+                <!-- 下面的视频列表 一页12个   结束-->
+
+
+              </div>
+
+              <!-- 分页 -->
+              <div id="fenye">
+              <div id="app" style="text-align: center;margin-top: 10px;">
+                <navigation :pages="pages" :current.sync="pageNo" @navpage="msgListView" id="page_clear" ></navigation>
+              </div>
+              </div>
+              <script src="/js/vue.min.js"></script>
+              <script type="text/javascript" src="/js/pagination.min.js"></script>
+                
+              <!-- 分页   结束-->
+
+            </section>
+          </section>
+          <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+        </section>
+      </section>
+    </section>    
+  </section>
+  <script src="/js/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="/js/bootstrap.js"></script>
+  <!-- App -->
+  <script src="/js/app.js"></script>  
+  <script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/js/app.plugin.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/demo.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+</body>
+</html>

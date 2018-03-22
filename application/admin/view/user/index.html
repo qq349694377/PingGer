@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>	
+<head>
+<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<meta name="keywords" content="Flat Dark Web Login Form Responsive Templates, Iphone Widget Template, Smartphone login forms,Login form, Widget Template, Responsive Templates, a Ipad 404 Templates, Flat Responsive Templates" />
+<link href="/css/style1.css" rel='stylesheet' type='text/css' />
+
+<script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<script>$(document).ready(function(c) {
+	$('.close').on('click', function(c){
+		$('.login-form').fadeOut('slow', function(c){
+	  		$('.login-form').remove();
+		});
+	});	  
+});
+</script>
+
+ <h1>Music</h1>
+<div class="login-form">	
+	<div class="clear"> </div>
+	<div class="avtar">
+		<img src="/images/avtar.png" />
+	</div>
+	<form>
+		<input type="text" class="text" value="" onfocus="this.value = '';"  placeholder='UserName' id='name'>
+		<input type="password" value="" onfocus="this.value = '';" style='margin-bottom: -0px;margin-left: 5px;' placeholder='Password' id='password'>
+		<input type="text" value="" style='width:146px;height:40px;margin-top: 0px;margin-left: 5px;' onfocus="this.value = '';" placeholder='Code' id='yzm'>
+		<img src="/admin/user/yzm" alt="" style='margin-top: 20px;'>		
+	
+	<div class="signin">
+		<input type="submit" value="Login" id='submit'>
+	</div>
+	</form>
+</div>
+</body>
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#submit').click(function(){
+		var name = $('#name').val();
+		var password = $('#password').val();
+		var yzm = $('#yzm').val();
+
+		if(name == '' || password == '' || yzm == ''){
+			alert('请赶紧填写信息');
+			return false;
+		}
+		$.ajax({
+			data:{name:name,pwd:password,yzm:yzm},
+			url:'/admin/user/login',
+			success:success,
+			async:false,
+			type:'post'
+		});
+		return false;
+
+		function success(data)
+		{
+			var obj = JSON.parse(data);
+			
+			if(obj.states == 1){
+				alert('验证码错误');
+			}else if(obj.states == 2){
+				alert('用户名不存在');
+			}else if(obj.states == 3){
+				alert('密码错误');
+			}else if(obj.states == 4){
+				alert('您还不是管理员');
+			}else if(obj.states == 5){
+				alert('登陆成功');
+				close();
+				window.open('/admin/index/index');
+			}else if(obj.states == 6){
+				alert('账号被锁定');
+			}
+			
+		}
+
+	});
+});
+	
+</script>
+</html>

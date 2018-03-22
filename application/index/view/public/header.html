@@ -1,0 +1,136 @@
+<header class="bg-white-only header header-md navbar navbar-fixed-top-xs">
+      <div class="navbar-header aside bg-info nav-xs">
+        <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">
+          <i class="icon-list"></i>
+        </a>
+        <a onclick="index1(this)" class="navbar-brand text-lt">
+          <i class="icon-earphones"></i>
+          <img src="/images/logo.png" alt="." class="hide">
+          <span class="hidden-nav-xs m-l-sm">Musik</span>
+        </a>
+        <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
+          <i class="icon-settings"></i>
+        </a>
+      </div>      <ul class="nav navbar-nav hidden-xs">
+        <li>
+          <a href="#nav,.navbar-header" data-toggle="class:nav-xs,nav-xs" class="text-muted">
+            <i class="fa fa-indent text"></i>
+            <i class="fa fa-dedent text-active"></i>
+          </a>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search"  onSubmit="return confirm();">
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn btn-sm bg-white btn-icon rounded" id="form_submit"><i class="fa fa-search"></i></button>
+            </span>
+            <input type="text" class="form-control input-sm no-border rounded" id="search_word" placeholder="搜索音乐 歌手 歌单...">
+          </div>
+        </div>
+      </form>
+      <div class="navbar-right ">
+        <ul class="nav navbar-nav m-n hidden-xs nav-user user">
+{if !empty($Request.session.username)}
+          <li class="hidden-xs">
+            <a href="#" class="dropdown-toggle lt" data-toggle="dropdown">
+              <i class="icon-bell"></i>
+  {if $sum != 0}
+              <span class="badge badge-sm up bg-danger count message_count">{$sum}</span>
+  {/if}
+            </a>
+            <section class="dropdown-menu aside-xl animated fadeInUp">
+              <section class="panel bg-white">
+                <div class="panel-heading b-light bg-light">
+  {if $sum != 0}
+                  <strong class="newMessage_sum">您有 <span class="count message_sum">{$sum}</span> 个新消息提醒</strong>
+  {else}
+                  <strong class="newMessage_sum">暂无新消息提醒</strong>
+  {/if}
+                </div>
+                <div class="list-group list-group-alt newMessage">
+  {if !empty($pyq)}
+    {foreach $pyq as $val}
+                  <a href="#" class="media list-group-item" onclick="message(this, {$val.cid}, {$val.id}, 1)">
+                    <span class="pull-left thumb-sm">
+                      <img src="{$val.photo}" alt="..." class="img-circle">
+                      <span>{$val.user}</span>
+                    </span>
+                    <span class="media-body block m-b-none">
+                      <span class="clear text-ellipsis">{$val.content}</span><br>
+                      <small class="text-muted">{$val.create_time|date="Y-m-d",###}</small>
+                    </span>
+                  </a>
+    {/foreach}
+  {/if}
+  {if !empty($mv)}
+    {foreach $mv as $v}
+                  <a href="#" class="media list-group-item" onclick="message(this, {$v.cid}, {$v.id}, 2)">
+                    <span class="pull-left thumb-sm">
+                      <img src="{$v.photo}" alt="..." class="img-circle">
+                      <span>{$v.user}</span>
+                    </span>
+                    <span class="media-body block m-b-none">
+                      <span class="clear text-ellipsis">{$v.content}</span><br>
+                      <small class="text-muted">{$v.create_time|date="Y-m-d",###}</small>
+                    </span>
+                  </a>
+    {/foreach}
+  {/if}
+                </div>
+                <div class="panel-footer text-sm">
+                  <a href="#" class="pull-right"><i class="fa fa-cog"></i></a>
+                  <a href="#notes" data-toggle="class:show animated fadeInRight" onclick="click_all()">忽略所有消息</a>
+                </div>
+              </section>
+            </section>
+          </li>
+{/if}
+          <li class="dropdown">
+{if empty($Request.session.username)}
+            <a href="#" class="dropdown-toggle bg clear" data-toggle="dropdown">
+              <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+                <img src="/images/a0.png" alt="...">
+              </span>
+              未登录 <b class="caret"></b>
+            </a>
+{else}
+            <a href="#" class="dropdown-toggle bg clear" data-toggle="dropdown">
+              <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+  {if !empty($Request.session.pic_header)}
+                <img src="{$Request.session.pic_header}" alt="...">
+  {else}
+                <img src="/images/a0.png" alt="...">
+  {/if}
+              </span>
+              {$Request.session.username} <b class="caret"></b>
+            </a>
+{/if}
+            <ul class="dropdown-menu animated fadeInRight"> 
+{if !empty($Request.session.username)} 
+  {if $admin == 1}          
+              <li>
+                <span class="arrow top"></span>
+                <a href="/admin/user/index" target="_blank">管理中心</a>
+              </li>
+  {/if}
+              <li>
+                <a  onclick="profile(this)">个人资料</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a href="/index/user/logout" data-toggle="ajaxModal" >退出</a>
+              </li>
+{else}
+              <li>
+                <a href="/index/user/index">登录</a>
+              </li>
+              <li>
+                <a href="/index/user/register">注册</a>
+              </li>
+{/if}
+            </ul>
+          </li>
+        </ul>
+      </div>      
+    </header>

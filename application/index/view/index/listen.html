@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>  
+  <meta charset="utf-8" />
+  <title>Musik | Web Application</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+  <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/font.css" type="text/css" />
+  <link rel="stylesheet" href="/css/app.css" type="text/css" />  
+    <!--[if lt IE 9]>
+    <script src="js/ie/html5shiv.js"></script>
+    <script src="js/ie/respond.min.js"></script>
+    <script src="js/ie/excanvas.js"></script>
+  <![endif]-->
+</head>
+<body class="">
+  <section class="vbox">
+    <section>
+      <section class="hbox stretch">
+        <!-- .aside -->
+        <!-- /.aside -->
+        <section id="content">
+          <section class="vbox">
+          <section class="w-f-md">
+            <section class="hbox stretch bg-black dker">
+              <!-- side content -->
+              <aside class="col-sm-6 no-padder" id="sidebar">
+                <section class="vbox animated fadeInUp">
+                  <section class="scrollable hover" style="bottom: 60px;">
+{if !empty($list.poster)}
+                    <div class="m-t-n-xxs item pos-rlt" style="width: 100%;height: 20%;">
+                      <div class="top text-right">
+                        <span class="musicbar animate bg-success bg-empty inline m-r-lg m-t" style="width:25px;height:30px">
+                          <span class="bar1 a3 lter"></span>
+                          <span class="bar2 a5 lt"></span>
+                          <span class="bar3 a1 bg"></span>
+                          <span class="bar4 a4 dk"></span>
+                          <span class="bar5 a2 dker"></span>
+                        </span>
+                      </div>
+                      <div class="bottom gd bg-info wrapper-lg">
+                        <span class="h2 font-thin">LIKE</span>
+                      </div>
+                      <img class="img-full" style="opacity: 0.6;" src="{$list.poster}" alt="...">
+                    </div>
+{else}
+                    <p style="line-height: 200px;text-align: center;color: red;">您尚未收藏喜欢的歌曲，快去添加吧...</p>
+{/if}
+                    <ul class="list-group list-group-lg no-radius no-border no-bg m-t-n-xxs m-b-none auto mySong">
+                      
+                    </ul>
+                  </section>
+                </section>
+              </aside>
+              <!-- / side content -->
+              <section class="col-sm-3 no-padder lt">
+                <section class="vbox">
+                  <section class="scrollable hover"  style="bottom: 60px;">
+                    <div class="m-t-n-xxs">
+                      <div class="panel panel-default" style="border:none;margin-bottom: 0;">
+                      <div class="panel-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                          我的歌单
+                        </a>
+                      </div>
+                      <div id="collapseTwo" class="panel-collapse collapse in" style="background:#7d94a4;">
+                        <div class="panel-body text-sm" style="padding: 0;">
+{if !empty($mylist)}                        
+{foreach $mylist as $value}
+                        <div class="col-sm-6 no-padder" style="border: 2px solid #fff;">
+                          <div class="item pos-rlt">
+                            <a href="#" class="item-overlay active opacity wrapper-md font-xs">
+                              <span class="block h3 font-bold text-success text-u-c">{$value.list}</span>
+                              <span class="bottom wrapper-md block"><i class="icon-arrow-right i-lg pull-right" onclick="mylist(this)"><i style="display: none;">{$value.id}</i></i></span>
+                            </a>
+                            <a>
+                              <img class="img-full" src="{$value.poster}" alt="...">
+                            </a>
+                          </div>
+                        </div>
+{/foreach}
+{else}
+                          <div class="item pos-rlt">
+                            <p style="text-align: center;color: red;">您尚未创建歌单...</p>
+                          </div>                    
+{/if}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel panel-default" style="border:none;margin-bottom: 0;">
+                      <div class="panel-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                          收藏歌单
+                        </a>
+                      </div>
+                      <div id="collapseThree" class="panel-collapse collapse" style="background:#7d94a4;">
+                        <div class="panel-body text-sm" style="padding: 0;">
+{if !empty($savelist)}                        
+{foreach $savelist as $value}
+                        <div class="col-sm-6 no-padder" style="border: 2px solid #fff;">
+                          <div class="item pos-rlt">
+                            <a href="#" class="item-overlay active opacity wrapper-md font-xs text-right">
+                              <span class="block h3 font-bold text-danger-lter text-u-c">{$value.list}</span>
+                              <span class="text-muted">{$value.author}</span>
+                              <span class="bottom wrapper-md block"><i class="icon-arrow-right i-lg pull-left" onclick="mylist(this)"><i style="display: none;">{$value.id}</i></i></span>
+                            </a>
+                            <a>
+                              <img class="img-full" src="{$value.poster}" alt="...">
+                            </a>
+                          </div>
+                        </div>
+{/foreach}
+{else}
+                          <div class="item pos-rlt">
+                            <p style="text-align: center;color: red;">您尚未收藏歌单...</p>
+                          </div>
+{/if}
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </section>
+                </section>
+              </section>
+              <!-- 歌单列表 -->
+              <section class="col-sm-4 no-padder bg" id="list_songs" style="display:none;">
+                <section class="vbox">
+                  <section class="scrollable hover">
+                    <ul class="list-group list-group-lg no-bg auto m-b-none m-t-n-xxs" id="list_listen">
+                    </ul>
+                  </section>
+                </section>
+              </section>
+            </section>
+          </section>
+        </section>
+          <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+        </section>
+      </section>
+    </section>    
+  </section>
+  <script src="/js/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="/js/bootstrap.js"></script>
+  <!-- App -->
+  <script src="/js/app.js"></script>  
+  <script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/js/app.plugin.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+  <script type="text/javascript" src="/js/jPlayer/demo.js"></script>
+  <script src="/js/plug-in.js"></script>
+<!-- <div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div> -->
+</body>
+</html>
+<script>
+  function content(id)
+  {
+    $.Pop('<div class="form-group"><textarea class="form-control fenxiang" rows="6" data-minwords="6" data-required="true" placeholder="Type your message"></textarea></div>','alert',function(){
+      var message = $('.fenxiang').val();
+      $.ajax({
+        type:'get',
+        dataType:'json',
+        url:'/index/index/share',
+        data:{id:id,content:message},
+        async:true,
+        success:share_result
+      });
+    })
+  }
+
+  function share_result(data)
+  {
+    var state = JSON.parse(data).state;
+    if (state == 1) {
+      alert('分享成功');
+    }
+    if (state == 2) {
+      alert('分享失败');
+    }
+    if (state == 3) {
+      alert('您尚未登录,请返回登录...');
+      window.parent.location.replace("/index/user/index");
+    }
+  }
+  
+</script>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="lib/html5shiv.js"></script>
+		<script type="text/javascript" src="lib/respond.min.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" type="text/css" href="/admin/static/h-ui/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/H-ui.admin.css" />
+		<link rel="stylesheet" type="text/css" href="/admin/lib/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/skin/default/skin.css" id="skin" />
+		<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/style.css" />
+		<!--[if IE 6]>
+		<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+		<script>DD_belatedPNG.fix('*');</script>
+		<![endif]-->
+		<title>添加管理员 - 管理员管理</title>
+	</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-admin-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
+			<div class="formControls col-xs-8 col-sm-9" id="name">
+				<input type="text" class="input-text" autocomplete="off"  placeholder="角色名称" id="password2" name="password2" value="{$data['title']}">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户列表：</label>
+			<div class="formControls col-xs-8 col-sm-9">{$user}</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+				{foreach $title as $key => $value}
+					<input type="checkbox" name="fruit" value="{$value['jid']}"/>    {$value['title']}
+					{if ($key+1) % 5 == 0}
+						<br/>
+					{/if}  
+				{/foreach}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="" cols="" rows="" class="textarea" id='beizhu' placeholder="说点什么...100个字符以内" dragonfly="true"  >{$data['content']}</textarea>
+			</div>
+		</div>
+		<!-- 将角色的id传过来  传给修改php-->
+		<div><input type="hidden" name="" value="{$iid}" id='hidden'></div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" id="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<script type="text/javascript" src='/js/jquery-1.11.3.min.js'></script>
+<script type="text/javascript">
+	$("#submit").click(function(){
+		
+		var pwd1 = $('#password2').val();
+		var duoxuan = '';//角色
+		var beizhu = $('#beizhu').val();//简介
+		var hidden = $('#hidden').val();//隐藏按钮的 隐藏iid
+		$("input:checkbox[name='fruit']:checked").each(function() {
+			duoxuan += $(this).val() + ",";
+		});
+
+		if(pwd1 == '' || duoxuan == '' || beizhu == ''){
+			alert('请填入所有项');
+			return false;
+		}
+
+		$.ajax({
+			data:{pwd:pwd1,duoxuan:duoxuan,beizhu:beizhu,iid:hidden},
+			url:'/admin/admin/gaigai',
+			type:'post',
+			async:false,
+			success:success
+		});
+		return false;
+
+		function success(data){
+			var obj = JSON.parse(data);
+			if(obj.state == 1){
+				alert('修改数据不符合要求');
+				return false;
+			}else if(obj.state == 2){
+				alert('修改成功');
+				window.close();
+			}
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/admin/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="/admin/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>品牌管理</title>
+</head>
+<body>
+<div class="page-container">
+	<div class="text-c"> 
+		<input type="text" class="input-text" style="width:250px" placeholder="输入音乐名称" id="text" value=''>
+		<button id='select' class="btn btn-success radius" name=""><i class="Hui-iconfont">&#xe665;</i> 搜音乐</button>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+		<span class="l">
+			<a href="javascript:;" id='piliang' class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量恢复</a>
+		</span> <span class="r">共有数据：<strong id='shuj'></strong> 条</span> </div>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-bg table-sort">
+			<thead>
+				<tr class="text-c">
+					<th width="25"></th>
+					<th width="40">ID</th>
+					<th width="150">歌名</th>
+					<th >音乐链接</th>
+					<th width="100">歌曲封面</th>
+					<th width="80">歌手</th>
+					<th width="70">上传时间</th>
+					<th width="40">浏览次数</th>
+					<th width="50">歌词</th>
+					<th width="40">热门</th>
+					<th width="40">收费</th>
+					<th width="40">价格</th>
+					<th width="80">操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbody">
+				
+			</tbody>
+		</table>
+		<div id="page" style="text-align: center;margin-top: 20px;">
+			<a class='href' href="" style="margin-right: 20px; ">首页</a>
+			<a class='href' href="" style="margin-right: 20px; ">上一页</a>
+			<a class='href' href="" style="margin-right: 20px; ">下一页</a>
+			<a class='href' href="" style="margin-right: 20px; ">尾页</a>
+		</div>
+	</div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/admin/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/admin/lib/layer/2.4/layer.js"></script>
+<!-- <script type="text/javascript" src="/admin/static/h-ui/js/H-ui.min.js"></script> -->
+<!-- <script type="text/javascript" src="/admin/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去--> 
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="/admin/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="/admin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="/admin/lib/laypage/1.2/laypage.js"></script>
+
+<!-- 自己引用的 -->
+<script type="text/javascript" src='/js/jquery-1.11.3.min.js'></script>
+<script type="text/javascript" src="/js/ajax.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url:'/admin/product/selectoutsong',
+			data:{},
+			type:'post',
+			success:success
+		});
+	
+		function success(data)
+		{
+			var obj = JSON.parse(data);
+			$('#shuj').html(obj.num);
+			$('tbody').html('');
+			for(var i=0;i<obj.data.length;i++){
+				// tr
+				var tr = $("<tr class='text-c'></tr>");
+			
+				// top 是将1,2换成 是,否的函数	
+				
+				// 数据
+				var shuju = $("<td><input name='checkname' type='checkbox' value='"+obj.data[i].id+"'></td><td>"+obj.data[i].id+"</td><td>"+obj.data[i].title+"</td><td>"+obj.data[i].mp3+"</td><td class='text-l text-c'><img src='"+obj.data[i].poster+"'style='width:63px;height:63px;'></td><td class='text-c'>"+obj.data[i].artist+"</td><td class='text-c'>"+obj.data[i].create_time+"</td><td class='text-c'>"+obj.data[i].hits+"</td><td class='text-c'>"+obj.data[i].word+"</td><td class='text-c'>"+top(obj.data[i].top)+"</td><td class='text-c'>"+top(obj.data[i].charge)+"</td><td class='text-c'>"+obj.data[i].money+"</td>");
+				//操作框的td
+				var td = $("<td class='f-14 product-brand-manage'></td>");
+
+				// 编辑按钮
+				var b = $("<a style='text-decoration:none' onClick=\"admin_edit('品牌编辑','/admin/product/update','"+obj.data[i].id+"')\" href='javascript:;' title='编辑''><i class='Hui-iconfont'>&#xe6df;</i></a>  &nbsp;&nbsp;"); 
+				// 删除按钮
+				var c = $("<a style='text-decoration:none' class='ml-5' href='javascript:;' title='恢复'><i class='Hui-iconfont'><img src='/images/recovery.png'></i></a>");
+
+				$('#tbody').append(tr);
+				tr.append(shuju);
+				tr.append(td);
+				td.append(b);
+				td.append(c);
+
+				//恢复音乐
+				c.click(function(){
+					var a = confirm('确认要恢复吗？');
+					if(a){
+						var id = $(this).parent().parent().children().eq(0).children().eq(0).val();
+						$.ajax({
+							type:'post',
+							url:'/admin/product/upsong',
+							data:{id:id},
+							async:false,
+							success:delsong
+						});
+						var asd = $(this).parent().parent().remove();
+					}
+					return false;			
+				});
+			}
+
+			//通过obj.allPage依次给上面每个a标签的href属性设置
+			var oPage =  obj.allPage;
+			
+			var i = 0;
+			for (var name in oPage) {
+				//console.log(name);
+				$('.href')[i].href = 'javascript:test(\'' +oPage[name] +'\')';
+				i++;
+			}
+		}
+
+		// 搜索音乐信息
+		$('#select').click(function(){
+			var content = $('#text').val();
+			if(content == ''){
+				alert('请填写搜索信息');
+				return false;
+			}
+			$.ajax({
+				data:{content:content},
+				url:'/admin/produ/selectlist2',
+				type:'post',
+				success:success
+			});
+		});
+
+		window.test = function(url){
+			test1(url);
+		};
+
+		function test1(url)
+		{
+			$.ajax({
+				method:'get',
+                url:url,
+                async:true,
+                data:null,
+                success:success
+			});
+		}
+
+		function delsong(data)
+		{
+			var obj = JSON.parse(data);
+			if(obj.state == 1){
+				alert('恢复成功');
+			}else if(obj.state == 2){
+				alert('恢复失败');
+			}
+		}
+
+		//将1，2  转化为 是，否
+		function top($a)
+		{
+			if($a == 1){
+					return '是';
+				}else{
+					return '否';
+				}
+		}
+	});
+	
+		/*管理员-编辑*/
+	function admin_edit(title,url,id,w,h){
+		if (title == null || title == '') {
+			title=false;
+		};
+		if (url == null || url == '') {
+			url="404.html";
+		};
+		if (w == null || w == '') {
+			w=800;
+		};
+		if (h == null || h == '') {
+			h=($(window).height() - 50);
+		};
+		layer.open({
+			type: 2,
+			area: [w+'px', h +'px'],
+			fix: false, //不固定
+			maxmin: true,
+			shade:0.4,
+			title: title,
+			content: url+'?id='+id
+		});
+	}
+
+	//批量删除
+	$('#piliang').click(function(){
+		// var a = $(":checkbox").checked;
+		text = $("input:checkbox[name='checkname']:checked").map(function(index,elem) {
+            return $(elem).val();
+        }).get().join(',');
+		if(text == ''){
+			alert('请选中要删除的项');
+			return false;
+		}
+
+		//将选中的项的id传到PHP
+		$.ajax({
+			data:{id:text},
+			type:'post',
+			url:'/admin/product/delete2'
+		});
+
+		alert('恢复成功');
+		//清除当前一行
+		text1 = $("input:checkbox[name='checkname']:checked").map(function(index,elem) {
+            return $(elem).parent().parent().remove();
+        });
+	});
+</script>
+</body>
+</html>
